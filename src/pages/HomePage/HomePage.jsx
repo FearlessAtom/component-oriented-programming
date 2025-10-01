@@ -1,8 +1,15 @@
 import styles from "../HomePage/HomePage.module.css";
 
-function HomePage()
+function HomePage({ navigate })
 {
-    return <p className={styles.header_text}>Memory card game</p>
+    return <div className={styles.container}>
+        <p className={styles.header_text}>Memory card game</p>
+
+        <button
+            className={styles.play_button}
+            onClick={ () => navigate("/game") }
+        >Play</button>
+    </div>
 }
 
 export default HomePage;

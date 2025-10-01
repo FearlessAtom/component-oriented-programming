@@ -4,7 +4,7 @@ import { HomePage, GamePage, ResultsPage} from "./pages";
 
 function App()
 {
-    const [currentPath, setCurrentPath] = useState("/game");
+    const [currentPath, setCurrentPath] = useState("/");
 
     const navigate = (path) =>
     {
@@ -15,11 +15,11 @@ function App()
     return <>
         <nav className="navbar">
             <button onClick={() => navigate("/")}>Home</button>
-            <button onClick={() => navigate("/game")}>Play</button>
+            <button onClick={() => navigate("/game")}>Game</button>
             <button onClick={() => navigate("/results")}>Resuls</button>
         </nav>
 
-        { currentPath == "/" && <HomePage /> }
+        { currentPath == "/" && <HomePage navigate={ navigate } /> }
         { currentPath == "/game" && <GamePage /> }
         { currentPath == "/results" && <ResultsPage /> }
     </>
