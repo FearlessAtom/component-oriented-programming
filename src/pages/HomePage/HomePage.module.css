@@ -1,0 +1,16 @@
+.header_text
+{
+    font-size: 3rem;
+}
+
+.play_button
+{
+    margin-left: 1rem;
+    font-size: 56px;
+}
+
+.container
+{
+    display: flex;
+    align-items: center;
+}
