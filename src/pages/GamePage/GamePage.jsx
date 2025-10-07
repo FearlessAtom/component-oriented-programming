@@ -1,23 +1,31 @@
 import { Board, Card, ScoreBoard } from "../../components";
-import styles from "../GamePage/GamePage.module.css"
+import styles from "../GamePage/GamePage.module.css";
+import { shuffle } from "../../utils/utils";
 
 function GamePage()
 {
-    let card_count = 20;
+    const card_count = 20;
+    const card_pairs = card_count / 2;
 
-    let cards = [];
+    let file_names = ["bug.png", "dih_to_yo.jpg", "mr_beast.jpg", "s1mple.jpg", "you_should_switch_to_linux.jpg"];
 
-    for (let i = 0; i < card_count; i++)
-    {
-        cards.push({ id: i });
-    }
+    file_names = shuffle(file_names);
+    file_names = file_names.slice(0, card_pairs);
 
-    cards = cards.map(card => <Card key={card.id} />);
+    let cards = [...file_names, ...file_names];
+    cards = shuffle(cards);
+
+    cards = cards.map((card, i) => <Card
+        card_image_path={ card }
+        key={i}
+    />);
+
+    console.log(cards);
 
     return <div className={styles.board_container}>
-        <Board card_count={ 20 }>
+        <Board>
             { cards }
-            <ScoreBoard></ScoreBoard>
+            <ScoreBoard />
         </Board>
     </div>
 }

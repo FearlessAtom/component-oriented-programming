@@ -1,7 +1,46 @@
 .card
 {
-    background-color: black;
-    width: 7rem;
-    height: 10rem;
+    position: relative;
+    width: 10.5rem;
+    height: 10.5rem;
     border-radius: 0.5rem;
+    transition: 500ms;
+    transform-style: preserve-3d;
+}
+
+.card_image
+{
+    position: absolute;
+    border-radius: 0.5rem;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    transition: 500ms;
+    pointer-events: none;
+}
+
+.card_image_flipped
+{
+    transform: rotateY(-180deg);
+}
+
+.flipped
+{
+    transform: rotateY(-180deg);
+}
+
+.card_image_front
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Verdana;
+    border: 3px solid black;
+}
+
+
+.card_image_front_text
+{
+    font-size: 24px;
+    user-select: none;
 }
