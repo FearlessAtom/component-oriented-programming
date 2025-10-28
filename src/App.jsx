@@ -1,10 +1,12 @@
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { HomePage, GamePage, ResultsPage} from "./pages";
 
 function App()
 {
     const [currentPath, setCurrentPath] = useState("/");
+
+    useEffect(() => setCurrentPath("/game"), []);
 
     const navigate = (path) =>
     {

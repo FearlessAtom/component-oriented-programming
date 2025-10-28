@@ -1,0 +1,90 @@
+import { useState, useEffect, createContext, useContext } from "react";
+
+const BoardContext = createContext();
+
+function BoardProvider({ children })
+{
+    const [flippedCards, setFlippedCards] = useState([]);
+    const [matchedCards, setMatchedCards] = useState([]);
+
+    useEffect(() =>
+    {
+        if (flippedCards.length < 2) return
+
+        let matched = true;
+
+        for (let i = 0; i < flippedCards.length - 1; i++)
+        {
+            if (flippedCards[i].cardImageName != flippedCards[i + 1].cardImageName) matched = false;
+        }
+
+        if (matched)
+        {
+            setMatchedCards([...matchedCards, ...flippedCards]);
+            setFlippedCards([]);
+        }
+
+        else
+        {
+            console.log(flippedCards.length);
+
+            setTimeout(() => 
+            {
+                while(flippedCards.length > 0)
+                {
+                    resetCard(flippedCards[0].cardId);
+                }
+            }, 1000)
+        }
+    }, [flippedCards]);
+
+    const resetCard = (cardId) => 
+    {
+        const index = flippedCards.map(card => card.cardId).indexOf(cardId);
+
+        if (index == -1) return;
+
+        const card = flippedCards[index];
+
+        card.setFlipped(false);
+
+        flippedCards.splice(flippedCards.map(card => card.cardId).indexOf(cardId), 1);
+        setFlippedCards(flippedCards);
+    }
+
+    const flipCard = (card) =>
+    {
+        if (matchedCards.map(card => card.cardId).includes(card.cardId)) return;
+
+        if (flippedCards.map(card => card.cardId).includes(card.cardId))
+        {
+            resetCard(card.cardId);
+        }
+
+        else
+        {
+            if(flippedCards.length >= 2) return;
+
+            card.setFlipped(true);
+            setFlippedCards([...flippedCards, card]);
+        }
+    };
+
+    return <BoardContext.Provider value={ flipCard }>
+        { children }
+    </BoardContext.Provider>
+}
+
+function useBoard()
+{
+    const context = useContext(BoardContext);
+
+    if (!context)
+    {
+        throw new Error('useBoard must be used within BoarderProvider');
+    }
+
+    return context;
+}
+
+export { BoardProvider, useBoard }

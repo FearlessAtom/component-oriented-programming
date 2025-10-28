@@ -22,6 +22,7 @@
 .card_image_flipped
 {
     transform: rotateY(-180deg);
+    border: 3px solid black;
 }
 
 .flipped
