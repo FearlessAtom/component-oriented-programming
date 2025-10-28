@@ -1,15 +1,17 @@
 import { useState, useEffect, createContext, useContext } from "react";
-
-const BoardContext = createContext();
-
-function BoardProvider({ children })
+import { useScore } from "./ScoreProvider";
+const BoardContext = createContext(); function BoardProvider({ children })
 {
     const [flippedCards, setFlippedCards] = useState([]);
     const [matchedCards, setMatchedCards] = useState([]);
 
+    const { moves, setMoves } = useScore();
+
     useEffect(() =>
     {
         if (flippedCards.length < 2) return
+
+        setMoves(previous_value => previous_value + 1);
 
         let matched = true;
 
@@ -26,8 +28,6 @@ function BoardProvider({ children })
 
         else
         {
-            console.log(flippedCards.length);
-
             setTimeout(() => 
             {
                 while(flippedCards.length > 0)
@@ -56,12 +56,7 @@ function BoardProvider({ children })
     {
         if (matchedCards.map(card => card.cardId).includes(card.cardId)) return;
 
-        if (flippedCards.map(card => card.cardId).includes(card.cardId))
-        {
-            resetCard(card.cardId);
-        }
-
-        else
+        if (!flippedCards.map(card => card.cardId).includes(card.cardId))
         {
             if(flippedCards.length >= 2) return;
 

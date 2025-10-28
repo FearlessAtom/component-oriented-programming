@@ -1,7 +1,7 @@
 import { Board, Card, ScoreBoard } from "../../components";
 import styles from "../GamePage/GamePage.module.css";
 import { getCards } from "../../utils/getCards";
-import { BoardProvider } from "../../providers/BoardProvider";
+import { BoardProvider,  } from "../../providers";
 
 function GamePage()
 {
@@ -18,7 +18,7 @@ function GamePage()
         <Board>
             <BoardProvider>
                 { cards }
-            <ScoreBoard />
+                <ScoreBoard />
             </BoardProvider>
         </Board>
     </div>

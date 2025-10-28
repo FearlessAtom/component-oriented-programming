@@ -1,6 +1,7 @@
 import "./App.css";
 import { useEffect, useState } from "react";
 import { HomePage, GamePage, ResultsPage} from "./pages";
+import { ScoreProvider } from "./providers/ScoreProvider";
 
 function App()
 {
@@ -14,7 +15,7 @@ function App()
         setCurrentPath(path);
     }
 
-    return <>
+    return <ScoreProvider>
         <nav className="navbar">
             <button onClick={() => navigate("/")}>Home</button>
             <button onClick={() => navigate("/game")}>Game</button>
@@ -24,7 +25,7 @@ function App()
         { currentPath == "/" && <HomePage navigate={ navigate } /> }
         { currentPath == "/game" && <GamePage /> }
         { currentPath == "/results" && <ResultsPage /> }
-    </>
+    </ScoreProvider>
 }
 
 export default App
