@@ -1,17 +1,24 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState } from "react";
 
 const SettingsContext = createContext();
 
-function SettingsProvider()
+function SettingsProvider({ children })
 {
-    return <SettingsContext.Provider>
-        
+    const [cardCount, setCardCount] = useState(0);
+
+    return <SettingsContext.Provider value={{ cardCount, setCardCount }}>
+        { children }
     </SettingsContext.Provider>
 }
 
 function useSettings()
 {
-    const context = useContext(SettingsProvider);
+    const context = useContext(SettingsContext);
+
+    if (!context)
+    {
+        throw new Error('useSettings must be used within SettingsProvider');
+    }
 
     return context;
 }

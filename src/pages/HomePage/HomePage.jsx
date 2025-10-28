@@ -1,15 +1,30 @@
+import { useRef } from "react";
+import { useSettings } from "../../providers";
 import styles from "../HomePage/HomePage.module.css";
 
 function HomePage({ navigate })
 {
-    return <div className={styles.container}>
-        <p className={styles.header_text}>Memory card game</p>
+    const settings = useSettings();
+    const inputRef = useRef();
 
-        <button
-            className={styles.play_button}
-            onClick={ () => navigate("/game") }
-        >Play</button>
-    </div>
+    const play = () =>
+    {
+        settings.setCardCount(inputRef.current.value);
+        navigate("/game");
+    }
+
+    return (
+        <div className={styles.container}>
+            <div>
+                <input ref={inputRef} style={{fontSize: 30}} type="number"
+                    defaultValue={12} min="2" max="24" step="2"/>
+
+                <button className={styles.play_button}onClick={play}>
+                    Play
+                </button>
+            </div>
+        </div>
+    );
 }
 
 export default HomePage;

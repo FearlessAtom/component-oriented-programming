@@ -1,17 +1,29 @@
 import { useState, useEffect, createContext, useContext } from "react";
 import { useScore } from "./ScoreProvider";
-const BoardContext = createContext(); function BoardProvider({ children })
+import { useSettings } from "./SettingsProvider";
+
+const BoardContext = createContext();
+
+function BoardProvider({ children })
 {
     const [flippedCards, setFlippedCards] = useState([]);
     const [matchedCards, setMatchedCards] = useState([]);
 
-    const { moves, setMoves } = useScore();
+    const score = useScore();
+    const settings = useSettings();
+
+    useEffect(() =>
+    {
+        const percentage = matchedCards.length / settings.cardCount * 100;
+
+        score.setPercentage(Math.floor(percentage));
+    }, [matchedCards]);
 
     useEffect(() =>
     {
         if (flippedCards.length < 2) return
 
-        setMoves(previous_value => previous_value + 1);
+        score.setMoves(previous_value => previous_value + 1);
 
         let matched = true;
 

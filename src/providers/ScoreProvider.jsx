@@ -6,10 +6,12 @@ const ScoreContext = createContext();
 function ScoreProvider({ children })
 {
     const [moves, setMoves] = useState(0);
+    const [percentage, setPercentage] = useState(0);
 
     const { timer, start, stop, reset } = useTimer();
 
-    return <ScoreContext.Provider value={{ moves, setMoves, timer, start, stop, reset }}>
+    return <ScoreContext.Provider value={{ moves, setMoves, percentage, setPercentage, setMoves,
+            timer, start, stop, reset }}>
         { children }
     </ScoreContext.Provider>
 }

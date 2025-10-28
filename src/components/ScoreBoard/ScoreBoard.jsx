@@ -19,7 +19,7 @@ function ScoreBoard()
     return <div className={ styles.container }>
         <p>Timer: { score.timer }</p>
         <p>Moves: { score.moves }</p>
-        <p>Percentage: 0</p>
+        <p>Percentage: { score.percentage }</p>
     </div>
 }
 

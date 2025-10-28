@@ -1,13 +1,13 @@
 import { Board, Card, ScoreBoard } from "../../components";
 import styles from "../GamePage/GamePage.module.css";
 import { getCards } from "../../utils/getCards";
-import { BoardProvider,  } from "../../providers";
+import { BoardProvider, useSettings,  } from "../../providers";
 
 function GamePage()
 {
-    const cards_count = 20;
+    const settings = useSettings();
 
-    let cards = getCards(cards_count);
+    let cards = getCards(settings.cardCount);
 
     cards = cards.map((card, i) => <Card
         cardImageName={ card }

@@ -1,13 +1,13 @@
 import "./App.css";
-import { useEffect, useState } from "react";
-import { HomePage, GamePage, ResultsPage} from "./pages";
-import { ScoreProvider } from "./providers/ScoreProvider";
+import { useState } from "react";
+import { HomePage, GamePage, ResultsPage } from "./pages";
+import { SettingsProvider, ScoreProvider } from "./providers";
 
 function App()
 {
     const [currentPath, setCurrentPath] = useState("/");
 
-    useEffect(() => setCurrentPath("/game"), []);
+    //useEffect(() => setCurrentPath("/game"), []);
 
     const navigate = (path) =>
     {
@@ -15,17 +15,13 @@ function App()
         setCurrentPath(path);
     }
 
-    return <ScoreProvider>
-        <nav className="navbar">
-            <button onClick={() => navigate("/")}>Home</button>
-            <button onClick={() => navigate("/game")}>Game</button>
-            <button onClick={() => navigate("/results")}>Resuls</button>
-        </nav>
-
-        { currentPath == "/" && <HomePage navigate={ navigate } /> }
-        { currentPath == "/game" && <GamePage /> }
-        { currentPath == "/results" && <ResultsPage /> }
-    </ScoreProvider>
+    return <SettingsProvider>
+        <ScoreProvider>
+            { currentPath == "/" && <HomePage navigate={ navigate } /> }
+            { currentPath == "/game" && <GamePage /> }
+            { currentPath == "/results" && <ResultsPage /> }
+        </ScoreProvider>
+    </SettingsProvider>
 }
 
 export default App
