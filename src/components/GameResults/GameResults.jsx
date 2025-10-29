@@ -9,7 +9,7 @@ function GameResults()
         <div className={ styles.game_results}>
             <p className={ styles.game_results_item }>Time: { score.timer }</p>
             <p className={ styles.game_results_item }>Moves: { score.moves }</p>
-            <p className={ styles.game_results_item }>Percentage: 0</p>
+            <p className={ styles.game_results_item }>Percentage: { score.percentage }</p>
         </div>
     </div>
 }

@@ -1,27 +1,29 @@
 import "./App.css";
-import { useState } from "react";
 import { HomePage, GamePage, ResultsPage } from "./pages";
-import { SettingsProvider, ScoreProvider } from "./providers";
+import { SettingsProvider, ScoreProvider, NavigationProvider, useNavigation } from "./providers";
 
 function App()
 {
-    const [currentPath, setCurrentPath] = useState("/");
-
-    //useEffect(() => setCurrentPath("/game"), []);
-
-    const navigate = (path) =>
-    {
-        window.history.pushState({}, "", path);
-        setCurrentPath(path);
-    }
-
-    return <SettingsProvider>
-        <ScoreProvider>
-            { currentPath == "/" && <HomePage navigate={ navigate } /> }
-            { currentPath == "/game" && <GamePage /> }
-            { currentPath == "/results" && <ResultsPage /> }
-        </ScoreProvider>
-    </SettingsProvider>
+    return <NavigationProvider>
+        <SettingsProvider>
+            <ScoreProvider>
+                <RouterComponents />
+            </ScoreProvider>
+        </SettingsProvider>
+    </NavigationProvider>
 }
 
-export default App
+function RouterComponents()
+{
+    const { currentPath } = useNavigation();
+    
+    return (
+        <>
+            { currentPath === "/" && <HomePage /> }
+            { currentPath === "/game" && <GamePage /> }
+            { currentPath === "/results" && <ResultsPage /> }
+        </>
+    );
+}
+
+export default App;

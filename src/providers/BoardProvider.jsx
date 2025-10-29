@@ -1,6 +1,7 @@
 import { useState, useEffect, createContext, useContext } from "react";
 import { useScore } from "./ScoreProvider";
 import { useSettings } from "./SettingsProvider";
+import { useNavigation } from "./NavigationProvider";
 
 const BoardContext = createContext();
 
@@ -11,6 +12,15 @@ function BoardProvider({ children })
 
     const score = useScore();
     const settings = useSettings();
+    const navigation = useNavigation();
+
+    useEffect(() =>
+    {
+        if (score.percentage == 100)
+        {
+            setTimeout(() => navigation.navigate("/results"), 2000);
+        }
+    }, [score.percentage]);
 
     useEffect(() =>
     {
