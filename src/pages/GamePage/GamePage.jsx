@@ -1,23 +1,25 @@
 import { Board, Card, ScoreBoard } from "../../components";
-import styles from "../GamePage/GamePage.module.css"
+import styles from "../GamePage/GamePage.module.css";
+import { getCards } from "../../utils/getCards";
+import { BoardProvider, useSettings,  } from "../../providers";
 
 function GamePage()
 {
-    let card_count = 20;
+    const settings = useSettings();
 
-    let cards = [];
+    let cards = getCards(settings.cardCount);
 
-    for (let i = 0; i < card_count; i++)
-    {
-        cards.push({ id: i });
-    }
-
-    cards = cards.map(card => <Card key={card.id} />);
+    cards = cards.map((card, i) => <Card
+        cardImageName={ card }
+        key={i}
+    />);
 
     return <div className={styles.board_container}>
-        <Board card_count={ 20 }>
-            { cards }
-            <ScoreBoard></ScoreBoard>
+        <Board>
+            <BoardProvider>
+                { cards }
+                <ScoreBoard />
+            </BoardProvider>
         </Board>
     </div>
 }
