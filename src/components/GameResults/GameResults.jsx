@@ -1,8 +1,7 @@
 import { useScore } from "../../providers";
 import styles from "../GameResults/GameResults.module.css";
 
-function GameResults()
-{
+function GameResults() {
     const score = useScore();
 
     return <div className={ styles.container }>

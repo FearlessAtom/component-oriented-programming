@@ -5,8 +5,7 @@ import { useNavigation } from "./NavigationProvider";
 
 const BoardContext = createContext();
 
-function BoardProvider({ children })
-{
+function BoardProvider({ children }) {
     const [flippedCards, setFlippedCards] = useState([]);
     const [matchedCards, setMatchedCards] = useState([]);
 
@@ -14,54 +13,45 @@ function BoardProvider({ children })
     const settings = useSettings();
     const navigation = useNavigation();
 
-    useEffect(() =>
-    {
-        if (score.percentage == 100)
-        {
+    useEffect(() => {
+        if (score.percentage == 100) {
+            score.timerStop();
             setTimeout(() => navigation.navigate("/results"), 2000);
         }
     }, [score.percentage]);
 
-    useEffect(() =>
-    {
+    useEffect(() => {
         const percentage = matchedCards.length / settings.cardCount * 100;
 
         score.setPercentage(Math.floor(percentage));
     }, [matchedCards]);
 
-    useEffect(() =>
-    {
+    useEffect(() => {
         if (flippedCards.length < 2) return
 
         score.setMoves(previous_value => previous_value + 1);
 
         let matched = true;
 
-        for (let i = 0; i < flippedCards.length - 1; i++)
-        {
+        for (let i = 0; i < flippedCards.length - 1; i++) {
             if (flippedCards[i].cardImageName != flippedCards[i + 1].cardImageName) matched = false;
         }
 
-        if (matched)
-        {
+        if (matched) {
             setMatchedCards([...matchedCards, ...flippedCards]);
             setFlippedCards([]);
         }
 
-        else
-        {
-            setTimeout(() => 
-            {
-                while(flippedCards.length > 0)
-                {
+        else {
+            setTimeout(() => {
+                while(flippedCards.length > 0) {
                     resetCard(flippedCards[0].cardId);
                 }
             }, 1000)
         }
     }, [flippedCards]);
 
-    const resetCard = (cardId) => 
-    {
+    const resetCard = (cardId) => {
         const index = flippedCards.map(card => card.cardId).indexOf(cardId);
 
         if (index == -1) return;
@@ -74,12 +64,10 @@ function BoardProvider({ children })
         setFlippedCards(flippedCards);
     }
 
-    const flipCard = (card) =>
-    {
+    const flipCard = (card) => {
         if (matchedCards.map(card => card.cardId).includes(card.cardId)) return;
 
-        if (!flippedCards.map(card => card.cardId).includes(card.cardId))
-        {
+        if (!flippedCards.map(card => card.cardId).includes(card.cardId)) {
             if(flippedCards.length >= 2) return;
 
             card.setFlipped(true);
@@ -92,12 +80,10 @@ function BoardProvider({ children })
     </BoardContext.Provider>
 }
 
-function useBoard()
-{
+function useBoard() {
     const context = useContext(BoardContext);
 
-    if (!context)
-    {
+    if (!context) {
         throw new Error('useBoard must be used within BoarderProvider');
     }
 

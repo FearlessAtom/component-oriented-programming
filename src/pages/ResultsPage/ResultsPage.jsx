@@ -1,8 +1,6 @@
 import { GameResults } from "../../components";
-import styles from "../ResultsPage/ResultsPage.module.css";
 
-function ResultsPage()
-{
+function ResultsPage() {
     return <GameResults></GameResults>
 }
 

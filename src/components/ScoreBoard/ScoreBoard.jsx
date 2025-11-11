@@ -8,11 +8,11 @@ function ScoreBoard()
 
     useEffect(() => 
     {
-        score.start();
+        score.timerStart();
 
         return () =>
         {
-            score.stop();
+            score.timerStop();
         };
     }, [score]);
 

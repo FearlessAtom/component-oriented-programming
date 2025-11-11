@@ -1,18 +1,74 @@
-.header_text
-{
-    font-size: 3rem;
-}
-
-.play_button
-{
-    margin-left: 1rem;
+.play-button {
+    margin: 1.5rem 0 0 0;
+    display: inline;
     font-size: 56px;
+    font-size: 3rem;
+    width: 100%;
+    border: none;
+    outline: 0.4rem solid var(--color-accent-secondary);
+    border-radius: 0.3rem;
+    color: white;
+    background-color: var(--color-background-main);
+    transition: 50ms;
 }
 
-.container
-{
+.play-button:hover {
+    background-color: #555555;
+}
+
+.container {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    height: 100vh;
+    overflow: none;
+}
+
+.input {
+    width: 100%;
+    margin: 0 auto 0 auto;
+    outline: 0.4rem solid var(--color-accent-secondary);
+    font-size: 3rem;
+    padding: 0 5px 0 5px;
+    display: block;
+    border: none;
+    background-color: var(--color-background-main);
+    border-radius: 0.4rem;
+    color: white;
+}
+
+.input:invalid {
+    outline: 0.4rem solid var(--color-danger);
+}
+
+.modal-window {
+    padding: 20px;
+    border-radius: 0.5rem;
+    background-color: var(--color-background-secondary);
+    outline: 0.4rem solid var(--color-accent-main)
+}
+
+.label {
+    margin: 0 0 0rem 0.6rem;
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.checkbox-label-container {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox {
+    color: black;
+    display: block;
+    width: 1.2rem;
+    height: 1.2rem
+}
+
+.error-message {
+    color: var(--color-danger);
+    margin: 1rem 0 0 0;
+    font-size: 1rem;
 }

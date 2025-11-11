@@ -3,8 +3,7 @@ import styles from "../GamePage/GamePage.module.css";
 import { getCards } from "../../utils/getCards";
 import { BoardProvider, useSettings,  } from "../../providers";
 
-function GamePage()
-{
+function GamePage() {
     const settings = useSettings();
 
     let cards = getCards(settings.cardCount);
@@ -15,12 +14,12 @@ function GamePage()
     />);
 
     return <div className={styles.board_container}>
-        <Board>
-            <BoardProvider>
+        <BoardProvider>
+            <Board>
                 { cards }
                 <ScoreBoard />
-            </BoardProvider>
-        </Board>
+            </Board>
+        </BoardProvider>
     </div>
 }
 

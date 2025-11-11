@@ -10,8 +10,9 @@ function ScoreProvider({ children })
 
     const { timer, start, stop, reset } = useTimer();
 
-    return <ScoreContext.Provider value={{ moves, setMoves, percentage, setPercentage, setMoves,
-            timer, start, stop, reset }}>
+    return <ScoreContext.Provider value={{ moves, setMoves, percentage, setPercentage, timer,
+        timerStart: start, timerStop: stop, timerReset: reset }}>
+
         { children }
     </ScoreContext.Provider>
 }

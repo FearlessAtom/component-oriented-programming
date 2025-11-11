@@ -2,15 +2,13 @@ import styles from "../Card/Card.module.css";
 import { useEffect, useState } from "react";
 import { useBoard } from "../../providers/BoardProvider";
 
-function Card({cardImageName})
-{
+function Card({cardImageName}) {
     const [flipped, setFlipped] = useState(false);
     const [cardId, setCardId] = useState(""); 
 
     const flipCard = useBoard();
 
-    useEffect(() => 
-    {
+    useEffect(() => {
         setCardId(Math.random());
     }, []);
 
