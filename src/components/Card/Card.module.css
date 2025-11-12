@@ -1,15 +1,19 @@
-.card
-{
+.card {
     position: relative;
     width: 10.5rem;
     height: 10.5rem;
     border-radius: 0.5rem;
-    transition: 500ms;
+    transition: 500ms, background-color 50ms;
     transform-style: preserve-3d;
+    background-color: var(--color-background-main);
+    outline: 5px solid var(--color-accent-secondary);
 }
 
-.card_image
-{
+.card:hover {
+    background-color: #555555;
+}
+
+.card_image {
     position: absolute;
     border-radius: 0.5rem;
     width: 100%;
@@ -19,19 +23,16 @@
     pointer-events: none;
 }
 
-.card_image_flipped
-{
+.card_image_flipped {
     transform: rotateY(-180deg);
     border: 3px solid black;
 }
 
-.flipped
-{
+.flipped {
     transform: rotateY(-180deg);
 }
 
-.card_image_front
-{
+.card_image_front {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -39,9 +40,9 @@
     border: 3px solid black;
 }
 
-
-.card_image_front_text
-{
+.card_image_front_text {
     font-size: 24px;
     user-select: none;
+    color: white;
+    font-weight: 600;
 }

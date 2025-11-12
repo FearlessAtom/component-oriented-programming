@@ -17,9 +17,18 @@ function ScoreBoard()
     }, [score]);
 
     return <div className={ styles.container }>
-        <p>Timer: { score.timer }</p>
-        <p>Moves: { score.moves }</p>
-        <p>Percentage: { score.percentage }</p>
+        <div className={styles["value-container"]}>
+            <p className={styles.label}>Timer: </p>
+            <p className={styles.value}>{ score.timer }</p>
+        </div>
+        <div className={styles["value-container"]}>
+            <p className={styles.label}>Moves: </p>
+            <p className={styles.value}>{ score.moves }</p>
+        </div>
+        <div className={styles["value-container"]}>
+            <p className={styles.label}>Percentage: </p>
+            <p className={styles.value}>{ score.percentage }%</p>
+        </div>
     </div>
 }
 

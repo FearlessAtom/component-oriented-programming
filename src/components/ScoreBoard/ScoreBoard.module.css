@@ -1,11 +1,31 @@
-.container
-{
+.container {
+    background-color: var(--color-background-secondary);
+    outline: 5px solid var(--color-accent-main);
+    border-radius: 0.3rem;
     display: inline-block;
     white-space: nowrap;
     padding: 10px;
-    border: 5px solid black;
     position: absolute;
-    top: -5px;
-    right: 0;
+    top: 0rem;
+    right: -0.2rem;
     transform: translateX(110%);
+}
+
+.value-container {
+    align-items: center;
+    display: flex;
+}
+
+.value-container:not(:last-of-type) {
+    margin-bottom: 0.5rem;
+}
+
+.label {
+    margin: 0.1rem 0 0;
+    font-weight: 550;
+}
+
+.value {
+    margin: 0;
+    font-weight: 600;
 }

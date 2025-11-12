@@ -13,7 +13,7 @@ function GamePage() {
         key={i}
     />);
 
-    return <div className={styles.board_container}>
+    return <div className={styles["board-container"]}>
         <BoardProvider>
             <Board>
                 { cards }
