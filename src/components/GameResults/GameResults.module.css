@@ -1,23 +1,19 @@
-.game_results
-{
+.game_results {
     border: 5px solid black;
     padding: 2rem;
 }
 
-.container
-{
+.container {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.game_results_item
-{
+.game_results_item {
     margin: 0;
     font-size: 30px;
 }
 
-.game_results_item:not(:last-child)
-{
+.game_results_item:not(:last-child) {
     margin-bottom: 1rem;
 }

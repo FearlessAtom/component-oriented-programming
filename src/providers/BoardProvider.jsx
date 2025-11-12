@@ -13,11 +13,30 @@ function BoardProvider({ children }) {
     const settings = useSettings();
     const navigation = useNavigation();
 
+    const stopGame = () => {
+        settings.setIsBoardLocked(true);
+        score.timerStop();
+        setTimeout(() => navigation.navigate("/results"), 2000);
+    }
+
     useEffect(() => {
-        if (score.percentage == 100) {
+        score.timerStart();
+
+        return () => {
             score.timerStop();
-            setTimeout(() => navigation.navigate("/results"), 2000);
-        }
+        };
+    }, []);
+
+    useEffect (() => {
+        if (!(settings.isMoveLimited && settings.moveLimit - score.moves == 0)) return;
+
+        stopGame();
+    }, [score.moves]);
+
+    useEffect(() => {
+        if (score.percentage != 100) return
+
+        stopGame();
     }, [score.percentage]);
 
     useEffect(() => {
@@ -27,7 +46,7 @@ function BoardProvider({ children }) {
     }, [matchedCards]);
 
     useEffect(() => {
-        if (flippedCards.length < 2) return
+        if (flippedCards.length < settings.cardsToMatch) return
 
         score.setMoves(previous_value => previous_value + 1);
 
@@ -65,10 +84,12 @@ function BoardProvider({ children }) {
     }
 
     const flipCard = (card) => {
+        if (settings.isBoardLocked) return;
+
         if (matchedCards.map(card => card.cardId).includes(card.cardId)) return;
 
         if (!flippedCards.map(card => card.cardId).includes(card.cardId)) {
-            if(flippedCards.length >= 2) return;
+            if(flippedCards.length >= settings.cardsToMatch) return;
 
             card.setFlipped(true);
             setFlippedCards([...flippedCards, card]);

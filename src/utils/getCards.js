@@ -1,8 +1,9 @@
+import { useSettings } from "../providers";
 import { shuffle } from "../utils/utils";
 
-function getCards(card_count)
+function getCards(cardCount, cardsToMatch)
 {
-    const card_pairs = card_count / 2;
+    const card_pairs = cardCount / cardsToMatch;
 
     let file_names = ["bug.png", "dih_to_yo.jpg", "mr_beast.jpg", "aleksib_dislike.jpg", "epstein.jpg",
         "s1mple.jpg", "you_should_switch_to_linux.jpg", "bakery.jpg", "dendi.jpg", "sponge_bob.png", 
@@ -11,7 +12,12 @@ function getCards(card_count)
     file_names = shuffle(file_names);
     file_names = file_names.slice(0, card_pairs);
 
-    let cards = [...file_names, ...file_names];
+    let cards = []
+
+    for (let i = 0; i < cardsToMatch; i++) {
+        cards = [...cards, ...file_names];
+    }
+
     cards = shuffle(cards);
     
     return cards;

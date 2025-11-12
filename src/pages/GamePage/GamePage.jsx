@@ -2,13 +2,18 @@ import { Board, Card, ScoreBoard } from "../../components";
 import styles from "../GamePage/GamePage.module.css";
 import { getCards } from "../../utils/getCards";
 import { BoardProvider, useSettings,  } from "../../providers";
+import { useEffect, useState } from "react";
 
 function GamePage() {
+    const [cards, setCards] = useState([]);
+
     const settings = useSettings();
 
-    let cards = getCards(settings.cardCount);
+    useEffect (() => {
+        setCards(getCards(settings.cardCount, settings.cardsToMatch));
+    }, []);
 
-    cards = cards.map((card, i) => <Card
+    const cardElements = cards.map((card, i) => <Card
         cardImageName={ card }
         key={i}
     />);
@@ -16,7 +21,7 @@ function GamePage() {
     return <div className={styles["board-container"]}>
         <BoardProvider>
             <Board>
-                { cards }
+                { cardElements }
                 <ScoreBoard />
             </Board>
         </BoardProvider>

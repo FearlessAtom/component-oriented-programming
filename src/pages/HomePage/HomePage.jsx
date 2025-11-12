@@ -14,23 +14,43 @@ function HomePage() {
             cardCount: settings.cardCount,
             isMoveLimited: settings.isMoveLimited,
             moveLimit: settings.moveLimit,
+            cardsToMatch: settings.cardsToMatch,
         }
     });
 
     const cardCount = watch("cardCount");
+    const cardsToMatch = watch("cardsToMatch");
 
     return <div className={styles.container}>
         <form onSubmit={handleSubmit(() => navigation.navigate("/game"))} className={styles["modal-window"]}>
             <p style={{margin: "0 0 1rem 0"}} className={styles.label}>Number of cards</p>
 
             <input style={{margin: "0 0 1rem 0"}} type="number" className={styles.input} min={gameSettings.minCardCount}
-                max={gameSettings.maxCardCount} step="2" {...register("cardCount", { required: true,
-                min: { value: gameSettings.minCardCount, message: `The minumum number of cards is ${gameSettings.minCardCount}` },
-                max: { value: gameSettings.maxCardCount, message: `The muximum number of cards is ${gameSettings.maxCardCount}` },
-                onBlur: (e) => settings.saveCardCount(e.target.value)})}
+                max={gameSettings.maxCardCount} {...register("cardCount", { required: true,
+                min: { value: gameSettings.minCardCount, message: `The minumum number of cards is ${gameSettings.minCardCount}!` },
+                max: { value: gameSettings.maxCardCount, message: `The muximum number of cards is ${gameSettings.maxCardCount}!` },
+                onChange: (e) => settings.saveCardCount(e.target.value), validate: (value) => {
+                    if (value % cardsToMatch != 0) return `The number of cards must be divisible by ${cardsToMatch}!`;
+                    return true;
+                }})}
             />
 
             <ErrorMessage errors={errors} name="cardCount"
+                render={({message}) => <p className={styles["error-message"]}>{message}</p>}
+            />
+
+            <p style={{margin: "0 0 1rem 0"}} className={styles.label}>Number of cards to match</p>
+
+            <input style={{margin: "0 0 1rem 0"}} type="number" className={styles.input} min={gameSettings.minCardsToMatch}
+                {...register("cardsToMatch", { required: true, onChange: (e) => settings.saveCardsToMatch(e.target.value),
+                min: { value: gameSettings.minCardsToMatch, message: `The minimum number of cards to match is ${gameSettings.minCardsToMatch}` },
+                validate: (value) => {
+                    if (value * 2 > cardCount) return "You need more cards in the game to match this many at once!";
+                    return true;
+                }})}
+            />
+
+            <ErrorMessage errors={errors} name="cardsToMatch"
                 render={({message}) => <p className={styles["error-message"]}>{message}</p>}
             />
 
@@ -43,9 +63,8 @@ function HomePage() {
 
             {settings.isMoveLimited &&
                 <>
-                    <input type="number" className={styles.input} min={gameSettings.minCardCount} {...register("moveLimit",
-                        { required: true, min: gameSettings.minCardCount, onChange: (e) => settings.saveMoveLimit(e.target.value), validate: value => 
-                        {
+                    <input type="number" className={styles.input} {...register("moveLimit",
+                        { required: true, onChange: (e) => settings.saveMoveLimit(e.target.value), validate: value => {
                             if (value * 2 < cardCount) return "Move limit must be at least half of the number of cards!";
                             return true;
                         } })} />
