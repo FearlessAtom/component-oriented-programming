@@ -4,7 +4,6 @@
     background-color: var(--color-background-secondary);
     display: grid;
     position: relative;
-    grid-template-columns: repeat(6, 1fr);
     justify-content: center;
     align-items: center;
     gap: 1rem;

@@ -1,26 +1,55 @@
 import { useState, useEffect, createContext, useContext } from "react";
 import { useScore } from "./ScoreProvider";
 import { useSettings } from "./SettingsProvider";
-import { useNavigation } from "./NavigationProvider";
 
 const BoardContext = createContext();
 
-function BoardProvider({ children }) {
+function BoardProvider({ children, refreshCards }) {
     const [flippedCards, setFlippedCards] = useState([]);
     const [matchedCards, setMatchedCards] = useState([]);
+    const [isGameResultsModalOpen, setIsGameResultsModalOpen] = useState(false);
 
     const score = useScore();
     const settings = useSettings();
-    const navigation = useNavigation();
+
+    const unflipCards = () => {
+        for (let i = 0; i < matchedCards.length; i++) {
+            matchedCards[i].setFlipped(false);
+        }
+    }
+
+    const startGame = () => {
+        unflipCards();
+        setIsGameResultsModalOpen(false);
+
+        const delay = matchedCards != 0 ? 500 : 0;
+
+        setTimeout(() => {
+            score.resetScore();
+            settings.setIsBoardLocked(false);
+            settings.setIsGameGoing(true);
+            setFlippedCards([]);
+            setMatchedCards([]);
+            refreshCards();
+        }, delay);
+    }
 
     const stopGame = () => {
+        setIsGameResultsModalOpen(true);
         settings.setIsBoardLocked(true);
+        settings.setIsGameGoing(false);
         score.timerStop();
-        setTimeout(() => navigation.navigate("/results"), 2000);
+    }
+
+    const resumeGame = () => {
+        setIsGameResultsModalOpen(false);
+        settings.setIsBoardLocked(false);
+        settings.setIsGameGoing(true);
+        score.timerStart();
     }
 
     useEffect(() => {
-        score.timerStart();
+        startGame();
 
         return () => {
             score.timerStop();
@@ -28,15 +57,17 @@ function BoardProvider({ children }) {
     }, []);
 
     useEffect (() => {
+        if (!settings.isGameGoing) return;
         if (!(settings.isMoveLimited && settings.moveLimit - score.moves == 0)) return;
 
-        stopGame();
+        setTimeout(stopGame, 500);
     }, [score.moves]);
 
     useEffect(() => {
+        if (!settings.isGameGoing) return;
         if (score.percentage != 100) return
 
-        stopGame();
+        setTimeout(stopGame, 500);
     }, [score.percentage]);
 
     useEffect(() => {
@@ -96,7 +127,7 @@ function BoardProvider({ children }) {
         }
     };
 
-    return <BoardContext.Provider value={ flipCard }>
+    return <BoardContext.Provider value={{ flipCard, isGameResultsModalOpen, startGame, stopGame, resumeGame }}>
         { children }
     </BoardContext.Provider>
 }

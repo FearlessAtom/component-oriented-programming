@@ -6,11 +6,13 @@
     --color-accent-secondary: #020202;
 
     --color-danger: #BA0000;
+    --color-success: #018403;
 }
 
 body {
     background-color: var(--color-background-main);
     font-family: Verdana;
+    margin: 0;
 }
 
 * {

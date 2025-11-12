@@ -1,7 +1,7 @@
 .card {
     position: relative;
-    width: 10.5rem;
-    height: 10.5rem;
+    width: 9.5rem;
+    height: 9.5rem;
     border-radius: 0.5rem;
     transition: 500ms, background-color 50ms;
     transform-style: preserve-3d;
@@ -45,4 +45,8 @@
     user-select: none;
     color: white;
     font-weight: 600;
+}
+
+.card:hover .card_image_front_text  {
+    color: var(--color-background-secondary);
 }

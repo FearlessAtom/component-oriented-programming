@@ -1,6 +1,6 @@
 .game_results {
-    border: 5px solid black;
-    padding: 2rem;
+    padding: 0.5rem;
+    min-width: 600px;
 }
 
 .container {
@@ -9,11 +9,65 @@
     align-items: center;
 }
 
-.game_results_item {
+.label {
+    font-weight: 500;
+    margin: 0 0.5rem 0 0;
+    font-size: 3rem;
+}
+
+.value {
+    font-weight: 600;
     margin: 0;
-    font-size: 30px;
+    font-size: 3rem;
+}
+
+.value-container {
+    display: flex;
+    align-items: center;
+}
+
+.value-container:not(:last-of-type)
+{
+    margin-bottom: 1rem;
 }
 
 .game_results_item:not(:last-child) {
     margin-bottom: 1rem;
+}
+
+.title {
+    margin: 0 auto 2rem auto;
+    font-size: 4rem;
+    width: fit-content;
+    font-weight: 600;
+}
+
+.color-loss {
+    color: var(--color-danger);
+}
+
+.color-victory {
+    color: var(--color-success);
+}
+
+.button-container {
+    display: flex;
+    margin-top: 2rem;
+    justify-content: space-between;
+}
+
+.button {
+    width: 48%;
+    font-size: 2.5rem;
+    background-color: var(--color-background-main);
+    outline: 5px solid var(--color-accent-secondary);
+    border-radius: 0.5rem;
+    color: white;
+    padding: 0.7rem;
+    border: none;
+    transition: 200;
+}
+
+.button:hover {
+    background-color: #555555;
 }

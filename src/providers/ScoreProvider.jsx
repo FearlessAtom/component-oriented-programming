@@ -1,17 +1,24 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useTimer } from "../hooks";
 
 const ScoreContext = createContext();
 
 function ScoreProvider({ children })
 {
-    const [moves, setMoves] = useState(0);
-    const [percentage, setPercentage] = useState(0);
-
+    const [moves, setMoves] = useState();
+    const [percentage, setPercentage] = useState();
     const { timer, start, stop, reset } = useTimer();
 
+    const resetScore = () => {
+        setPercentage(0);
+        setMoves(0);
+        reset();
+    }
+
+    useEffect(() => { resetScore }, []);
+
     return <ScoreContext.Provider value={{ moves, setMoves, percentage, setPercentage, timer,
-        timerStart: start, timerStop: stop, timerReset: reset }}>
+        timerStart: start, timerStop: stop, timerReset: reset, resetScore }}>
 
         { children }
     </ScoreContext.Provider>

@@ -1,7 +1,7 @@
-import { Board, Card, ScoreBoard } from "../../components";
+import { Board, BoardContent, Card, GameResults, Modal, Portal, ScoreBoard } from "../../components";
 import styles from "../GamePage/GamePage.module.css";
 import { getCards } from "../../utils/getCards";
-import { BoardProvider, useSettings,  } from "../../providers";
+import { BoardProvider, useBoard, useSettings,  } from "../../providers";
 import { useEffect, useState } from "react";
 
 function GamePage() {
@@ -9,21 +9,13 @@ function GamePage() {
 
     const settings = useSettings();
 
-    useEffect (() => {
+    const refreshCards = () => {
         setCards(getCards(settings.cardCount, settings.cardsToMatch));
-    }, []);
-
-    const cardElements = cards.map((card, i) => <Card
-        cardImageName={ card }
-        key={i}
-    />);
+    }
 
     return <div className={styles["board-container"]}>
-        <BoardProvider>
-            <Board>
-                { cardElements }
-                <ScoreBoard />
-            </Board>
+        <BoardProvider refreshCards={ refreshCards }>
+            <BoardContent cards={cards}/>
         </BoardProvider>
     </div>
 }

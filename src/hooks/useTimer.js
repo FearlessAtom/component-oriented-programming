@@ -29,6 +29,7 @@ function useTimer()
     {
         stop();
         setSeconds(0);
+        start();
     }
 
     useEffect(() =>

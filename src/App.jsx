@@ -1,6 +1,6 @@
 import "./App.css";
-import { HomePage, GamePage, ResultsPage } from "./pages";
-import { SettingsProvider, ScoreProvider, NavigationProvider, useNavigation } from "./providers";
+import { HomePage, GamePage } from "./pages";
+import { SettingsProvider, ScoreProvider, NavigationProvider, useNavigation, BoardProvider } from "./providers";
 
 function App()
 {
@@ -21,7 +21,6 @@ function RouterComponents()
         <>
             { currentPath === "/" && <HomePage /> }
             { currentPath === "/game" && <GamePage /> }
-            { currentPath === "/results" && <ResultsPage /> }
         </>
     );
 }

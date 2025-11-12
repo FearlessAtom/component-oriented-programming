@@ -8,6 +8,7 @@ function SettingsProvider({ children }) {
     const [moveLimit, setMoveLimit] = useState(localStorage.getItem("moveLimit"));
     const [cardsToMatch, setCardsToMatch] = useState(localStorage.getItem("cardsToMatch"));
     const [isBoardLocked, setIsBoardLocked] = useState(false);
+    const [isGameGoing, setIsGameGoing] = useState(false);
 
     const saveCardCount = (value) => {
         if (!Number.isInteger(Number(value))) return;
@@ -36,7 +37,7 @@ function SettingsProvider({ children }) {
     }
 
     return <SettingsContext.Provider value={{ cardCount, isMoveLimited, moveLimit, cardsToMatch, saveCardCount, saveIsMoveLimited,
-        saveMoveLimit, saveCardsToMatch, isBoardLocked, setIsBoardLocked }}>
+        saveMoveLimit, saveCardsToMatch, isBoardLocked, setIsBoardLocked, isGameGoing, setIsGameGoing }}>
 
         { children }
     </SettingsContext.Provider>
