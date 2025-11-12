@@ -1,2 +1,2 @@
 ### Component-Oriented Programming
-### Semenhyk Oleksiy
+### Semenchyk Oleksiy
