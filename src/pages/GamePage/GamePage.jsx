@@ -1,26 +1,22 @@
-import { Board, Card, ScoreBoard } from "../../components";
+import { Board, BoardContent, Card, GameResults, Modal, Portal, ScoreBoard } from "../../components";
 import styles from "../GamePage/GamePage.module.css";
 import { getCards } from "../../utils/getCards";
-import { BoardProvider, useSettings,  } from "../../providers";
+import { BoardProvider, useBoard, useSettings,  } from "../../providers";
+import { useEffect, useState } from "react";
 
-function GamePage()
-{
+function GamePage() {
+    const [cards, setCards] = useState([]);
+
     const settings = useSettings();
 
-    let cards = getCards(settings.cardCount);
+    const refreshCards = () => {
+        setCards(getCards(settings.cardCount, settings.cardsToMatch));
+    }
 
-    cards = cards.map((card, i) => <Card
-        cardImageName={ card }
-        key={i}
-    />);
-
-    return <div className={styles.board_container}>
-        <Board>
-            <BoardProvider>
-                { cards }
-                <ScoreBoard />
-            </BoardProvider>
-        </Board>
+    return <div className={styles["board-container"]}>
+        <BoardProvider refreshCards={ refreshCards }>
+            <BoardContent cards={cards}/>
+        </BoardProvider>
     </div>
 }
 

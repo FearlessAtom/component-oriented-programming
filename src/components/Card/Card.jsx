@@ -1,22 +1,20 @@
 import styles from "../Card/Card.module.css";
 import { useEffect, useState } from "react";
-import { useBoard } from "../../providers/BoardProvider";
+import { useBoard } from "../../providers";
 
-function Card({cardImageName})
-{
+function Card({cardImageName}) {
     const [flipped, setFlipped] = useState(false);
     const [cardId, setCardId] = useState(""); 
 
-    const flipCard = useBoard();
+    const board = useBoard();
 
-    useEffect(() => 
-    {
+    useEffect(() => {
         setCardId(Math.random());
     }, []);
 
     return <div
         className={styles.card + (flipped ? " " + styles.flipped : "")}
-        onClick={ () => flipCard({ cardImageName, cardId, setFlipped }) }
+        onClick={ () => board.flipCard({ cardImageName, cardId, setFlipped, flipped }) }
     >
         <div className={styles.card_image + " " + styles.card_image_front}>
             <p className={styles.card_image_front_text}>?</p>

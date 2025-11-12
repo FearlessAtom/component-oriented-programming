@@ -1,67 +1,18 @@
-import { useState, useEffect, createContext, useContext } from "react";
-import { useScore } from "./ScoreProvider";
-import { useSettings } from "./SettingsProvider";
-import { useNavigation } from "./NavigationProvider";
+import { useState, createContext, useContext } from "react";
+import { useSettings, useScore } from "../providers";
+import { useCardMatching } from "../hooks";
 
 const BoardContext = createContext();
 
-function BoardProvider({ children })
-{
+function BoardProvider({ children, refreshCards }) {
     const [flippedCards, setFlippedCards] = useState([]);
     const [matchedCards, setMatchedCards] = useState([]);
+    const [isGameResultsModalOpen, setIsGameResultsModalOpen] = useState(false);
 
     const score = useScore();
     const settings = useSettings();
-    const navigation = useNavigation();
 
-    useEffect(() =>
-    {
-        if (score.percentage == 100)
-        {
-            setTimeout(() => navigation.navigate("/results"), 2000);
-        }
-    }, [score.percentage]);
-
-    useEffect(() =>
-    {
-        const percentage = matchedCards.length / settings.cardCount * 100;
-
-        score.setPercentage(Math.floor(percentage));
-    }, [matchedCards]);
-
-    useEffect(() =>
-    {
-        if (flippedCards.length < 2) return
-
-        score.setMoves(previous_value => previous_value + 1);
-
-        let matched = true;
-
-        for (let i = 0; i < flippedCards.length - 1; i++)
-        {
-            if (flippedCards[i].cardImageName != flippedCards[i + 1].cardImageName) matched = false;
-        }
-
-        if (matched)
-        {
-            setMatchedCards([...matchedCards, ...flippedCards]);
-            setFlippedCards([]);
-        }
-
-        else
-        {
-            setTimeout(() => 
-            {
-                while(flippedCards.length > 0)
-                {
-                    resetCard(flippedCards[0].cardId);
-                }
-            }, 1000)
-        }
-    }, [flippedCards]);
-
-    const resetCard = (cardId) => 
-    {
+    const resetCard = (cardId) => {
         const index = flippedCards.map(card => card.cardId).indexOf(cardId);
 
         if (index == -1) return;
@@ -74,30 +25,67 @@ function BoardProvider({ children })
         setFlippedCards(flippedCards);
     }
 
-    const flipCard = (card) =>
-    {
+
+    const flipCard = (card) => {
+        if (settings.isBoardLocked) return;
+
         if (matchedCards.map(card => card.cardId).includes(card.cardId)) return;
 
-        if (!flippedCards.map(card => card.cardId).includes(card.cardId))
-        {
-            if(flippedCards.length >= 2) return;
+        if (!flippedCards.map(card => card.cardId).includes(card.cardId)) {
+            if(flippedCards.length >= settings.cardsToMatch) return;
 
             card.setFlipped(true);
             setFlippedCards([...flippedCards, card]);
         }
     };
 
-    return <BoardContext.Provider value={ flipCard }>
+    const unflipCards = () => {
+        for (let i = 0; i < matchedCards.length; i++) {
+            matchedCards[i].setFlipped(false);
+        }
+    }
+
+    const startGame = () => {
+        unflipCards();
+        setIsGameResultsModalOpen(false);
+
+        const delay = matchedCards != 0 ? 500 : 0;
+
+        setTimeout(() => {
+            score.resetScore();
+            settings.setIsBoardLocked(false);
+            settings.setIsGameGoing(true);
+            setFlippedCards([]);
+            setMatchedCards([]);
+            refreshCards();
+        }, delay);
+    }
+
+    const stopGame = () => {
+        setIsGameResultsModalOpen(true);
+        settings.setIsBoardLocked(true);
+        settings.setIsGameGoing(false);
+        score.timerStop();
+    }
+
+    const resumeGame = () => {
+        setIsGameResultsModalOpen(false);
+        settings.setIsBoardLocked(false);
+        settings.setIsGameGoing(true);
+        score.timerStart();
+    }
+
+    useCardMatching({ startGame, stopGame, resetCard, matchedCards, setMatchedCards, flippedCards, setFlippedCards });
+
+    return <BoardContext.Provider value={{ flipCard, isGameResultsModalOpen, startGame, stopGame,  stopGame}}>
         { children }
     </BoardContext.Provider>
 }
 
-function useBoard()
-{
+function useBoard() {
     const context = useContext(BoardContext);
 
-    if (!context)
-    {
+    if (!context) {
         throw new Error('useBoard must be used within BoarderProvider');
     }
 

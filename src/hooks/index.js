@@ -1,3 +1,4 @@
-import { useTimer } from "../hooks/useTimer";
+import { useTimer  } from "../hooks/useTimer";
+import { useCardMatching } from "../hooks/useCardMatching";
 
-export { useTimer }
+export { useTimer, useCardMatching }

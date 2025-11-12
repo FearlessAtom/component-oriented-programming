@@ -2,34 +2,25 @@ import { createContext, useContext, useState } from "react";
 
 const NavigationContext = createContext();
 
-function NavigationProvider({ children })
-{
+function NavigationProvider({ children }) {
     const [currentPath, setCurrentPath] = useState("/");
 
-    const navigate = (path) =>
-    {
+    const navigate = (path) => {
         window.history.pushState({}, "", path);
         setCurrentPath(path);
     };
 
-    const value = {
-        currentPath,
-        navigate
-    };
+    const value = { currentPath, navigate };
 
-    return (
-        <NavigationContext.Provider value={value}>
-            {children}
-        </NavigationContext.Provider>
-    );
+    return <NavigationContext.Provider value={value}>
+        {children}
+    </NavigationContext.Provider>
 }
 
-function useNavigation()
-{
+function useNavigation() {
     const context = useContext(NavigationContext);
     
-    if (!context)
-    {
+    if (!context) {
         throw new Error('useNavigation must be used within NavigationProvider');
     }
     
