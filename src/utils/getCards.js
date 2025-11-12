@@ -1,4 +1,3 @@
-import { useSettings } from "../providers";
 import { shuffle } from "../utils/utils";
 
 function getCards(cardCount, cardsToMatch)

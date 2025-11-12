@@ -1,6 +1,6 @@
-import { useState, useEffect, createContext, useContext } from "react";
-import { useScore } from "./ScoreProvider";
-import { useSettings } from "./SettingsProvider";
+import { useState, createContext, useContext } from "react";
+import { useSettings, useScore } from "../providers";
+import { useCardMatching } from "../hooks";
 
 const BoardContext = createContext();
 
@@ -11,6 +11,33 @@ function BoardProvider({ children, refreshCards }) {
 
     const score = useScore();
     const settings = useSettings();
+
+    const resetCard = (cardId) => {
+        const index = flippedCards.map(card => card.cardId).indexOf(cardId);
+
+        if (index == -1) return;
+
+        const card = flippedCards[index];
+
+        card.setFlipped(false);
+
+        flippedCards.splice(flippedCards.map(card => card.cardId).indexOf(cardId), 1);
+        setFlippedCards(flippedCards);
+    }
+
+
+    const flipCard = (card) => {
+        if (settings.isBoardLocked) return;
+
+        if (matchedCards.map(card => card.cardId).includes(card.cardId)) return;
+
+        if (!flippedCards.map(card => card.cardId).includes(card.cardId)) {
+            if(flippedCards.length >= settings.cardsToMatch) return;
+
+            card.setFlipped(true);
+            setFlippedCards([...flippedCards, card]);
+        }
+    };
 
     const unflipCards = () => {
         for (let i = 0; i < matchedCards.length; i++) {
@@ -48,86 +75,9 @@ function BoardProvider({ children, refreshCards }) {
         score.timerStart();
     }
 
-    useEffect(() => {
-        startGame();
+    useCardMatching({ startGame, stopGame, resetCard, matchedCards, setMatchedCards, flippedCards, setFlippedCards });
 
-        return () => {
-            score.timerStop();
-        };
-    }, []);
-
-    useEffect (() => {
-        if (!settings.isGameGoing) return;
-        if (!(settings.isMoveLimited && settings.moveLimit - score.moves == 0)) return;
-
-        setTimeout(stopGame, 500);
-    }, [score.moves]);
-
-    useEffect(() => {
-        if (!settings.isGameGoing) return;
-        if (score.percentage != 100) return
-
-        setTimeout(stopGame, 500);
-    }, [score.percentage]);
-
-    useEffect(() => {
-        const percentage = matchedCards.length / settings.cardCount * 100;
-
-        score.setPercentage(Math.floor(percentage));
-    }, [matchedCards]);
-
-    useEffect(() => {
-        if (flippedCards.length < settings.cardsToMatch) return
-
-        score.setMoves(previous_value => previous_value + 1);
-
-        let matched = true;
-
-        for (let i = 0; i < flippedCards.length - 1; i++) {
-            if (flippedCards[i].cardImageName != flippedCards[i + 1].cardImageName) matched = false;
-        }
-
-        if (matched) {
-            setMatchedCards([...matchedCards, ...flippedCards]);
-            setFlippedCards([]);
-        }
-
-        else {
-            setTimeout(() => {
-                while(flippedCards.length > 0) {
-                    resetCard(flippedCards[0].cardId);
-                }
-            }, 1000)
-        }
-    }, [flippedCards]);
-
-    const resetCard = (cardId) => {
-        const index = flippedCards.map(card => card.cardId).indexOf(cardId);
-
-        if (index == -1) return;
-
-        const card = flippedCards[index];
-
-        card.setFlipped(false);
-
-        flippedCards.splice(flippedCards.map(card => card.cardId).indexOf(cardId), 1);
-        setFlippedCards(flippedCards);
-    }
-
-    const flipCard = (card) => {
-        if (settings.isBoardLocked) return;
-
-        if (matchedCards.map(card => card.cardId).includes(card.cardId)) return;
-
-        if (!flippedCards.map(card => card.cardId).includes(card.cardId)) {
-            if(flippedCards.length >= settings.cardsToMatch) return;
-
-            card.setFlipped(true);
-            setFlippedCards([...flippedCards, card]);
-        }
-    };
-
-    return <BoardContext.Provider value={{ flipCard, isGameResultsModalOpen, startGame, stopGame, resumeGame }}>
+    return <BoardContext.Provider value={{ flipCard, isGameResultsModalOpen, startGame, stopGame,  stopGame}}>
         { children }
     </BoardContext.Provider>
 }

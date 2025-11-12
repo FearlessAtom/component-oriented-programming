@@ -1,6 +1,6 @@
 import styles from "../Card/Card.module.css";
 import { useEffect, useState } from "react";
-import { useBoard } from "../../providers/BoardProvider";
+import { useBoard } from "../../providers";
 
 function Card({cardImageName}) {
     const [flipped, setFlipped] = useState(false);

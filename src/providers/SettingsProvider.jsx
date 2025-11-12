@@ -1,17 +1,20 @@
 import { createContext, useContext, useState } from "react";
+import { defaultGameSettings } from "../config";
 
 const SettingsContext = createContext();
 
 function SettingsProvider({ children }) {
-    const [cardCount, setCardCount] = useState(localStorage.getItem("cardCount"));
-    const [isMoveLimited, setIsMoveLimited] = useState(localStorage.getItem("isMoveLimited") == "true" ? true : false);
-    const [moveLimit, setMoveLimit] = useState(localStorage.getItem("moveLimit"));
-    const [cardsToMatch, setCardsToMatch] = useState(localStorage.getItem("cardsToMatch"));
+
+    const [cardCount, setCardCount] = useState(localStorage.getItem("cardCount") ?? defaultGameSettings.cardCount);
+    const [isMoveLimited, setIsMoveLimited] = useState(localStorage.getItem("isMoveLimited") === "true");
+    const [moveLimit, setMoveLimit] = useState(localStorage.getItem("moveLimit") ?? defaultGameSettings.moveLimit);
+    const [cardsToMatch, setCardsToMatch] = useState(localStorage.getItem("cardsToMatch") ?? defaultGameSettings.cardsToMatch);
     const [isBoardLocked, setIsBoardLocked] = useState(false);
     const [isGameGoing, setIsGameGoing] = useState(false);
 
     const saveCardCount = (value) => {
-        if (!Number.isInteger(Number(value))) return;
+
+        if (!Number.isInteger(Number(value)) || !value) return;
 
         localStorage.setItem("cardCount", value);
         setCardCount(value);
@@ -23,14 +26,14 @@ function SettingsProvider({ children }) {
     }
 
     const saveMoveLimit = (value) => {
-        if (!Number.isInteger(Number(value))) return;
+        if (!Number.isInteger(Number(value)) || !value) return;
 
         localStorage.setItem("moveLimit", value);
         setMoveLimit(value);
     }
 
     const saveCardsToMatch = (value) => {
-        if (!Number.isInteger(Number(value))) return;
+        if (!Number.isInteger(Number(value)) || !value) return;
 
         localStorage.setItem("cardsToMatch", value);
         setCardsToMatch(value);
