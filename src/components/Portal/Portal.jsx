@@ -8,4 +8,4 @@ function Portal(props)
     return  createPortal(<>{ props.children }</>, modalRootEl);
 }
 
-export { Portal }
+export default Portal

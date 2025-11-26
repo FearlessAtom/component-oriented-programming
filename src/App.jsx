@@ -1,27 +1,27 @@
 import "./App.css";
-import { HomePage, GamePage } from "./pages";
-import { SettingsProvider, ScoreProvider, NavigationProvider, useNavigation, BoardProvider } from "./providers";
+import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router";
+import { HomePage, GamePage, ResultsPage } from "./pages";
+import { SettingsProvider, ScoreProvider } from "./providers";
+import ResultPage from "./pages/ResultPage/ResultPage";
 
-function App()
-{
-    return <NavigationProvider>
+function App() {
+    const router = createBrowserRouter(
+        createRoutesFromElements(
+            <>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/game" element={<GamePage />} />
+                <Route path="/results" element={<ResultsPage />} />
+                <Route path="/results/:resultId" element={<ResultPage />} />
+            </>
+        )
+    );
+
+    return (
         <SettingsProvider>
             <ScoreProvider>
-                <RouterComponents />
+                <RouterProvider router={router} />
             </ScoreProvider>
         </SettingsProvider>
-    </NavigationProvider>
-}
-
-function RouterComponents()
-{
-    const { currentPath } = useNavigation();
-    
-    return (
-        <>
-            { currentPath === "/" && <HomePage /> }
-            { currentPath === "/game" && <GamePage /> }
-        </>
     );
 }
 

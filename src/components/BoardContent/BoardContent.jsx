@@ -1,23 +1,27 @@
 import { useBoard, useSettings } from "../../providers"
 import { GameResults, Modal, Portal, ScoreBoard, Card, Board } from "../";
 
-function BoardContent(props)
+function BoardContent()
 {
     const board = useBoard();
     const settings = useSettings();
 
-    const cardElements = props.cards.map((card, i) => <Card
-        cardImageName={ card }
-        key={i}
-    />);
+    const cards = board.cards;
+
+    const cardElements = cards.map((card, i) => {
+        return <Card
+            card={card}
+            onFlip={() => board.flipCard(card.cardId)}
+            isFlipped={board.isFlipped(card.cardId)}
+            key={i}
+        />
+    });
 
     return <>
         <Board>
-            { cardElements }
+            {cardElements}
 
-            { settings.isGameGoing && 
-                <ScoreBoard />
-            }
+            {settings.isGameGoing && <ScoreBoard />}
         </Board>
 
         {board.isGameResultsModalOpen &&
@@ -30,4 +34,4 @@ function BoardContent(props)
     </>
 }
 
-export { BoardContent }
+export default BoardContent;

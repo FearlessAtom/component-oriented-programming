@@ -1,19 +1,37 @@
-.play-button {
-    margin: 1.5rem 0 0 0;
+.button {
     display: inline;
     font-size: 56px;
     font-size: 3rem;
+    border-radius: 0.3rem;
+}
+
+.play-button {
+    margin: 1.5rem 0 0 0;
     width: 100%;
     border: none;
     outline: 0.4rem solid var(--color-accent-secondary);
-    border-radius: 0.3rem;
     color: white;
     background-color: var(--color-background-main);
     transition: 50ms;
 }
 
+
 .play-button:hover {
     background-color: #555555;
+}
+
+.results-button {
+    margin: 1.5rem 0 0 0;
+    width: 100%;
+    border: none;
+    outline: 0.4rem solid var(--color-accent-main);
+    color: white;
+    background-color: var(--color-accent-secondary);
+    transition: 50ms;
+}
+
+.results-button:hover {
+    background-color: #383838;
 }
 
 .container {
@@ -69,6 +87,6 @@
 
 .error-message {
     color: var(--color-danger);
-    margin: 1rem 0 0 0;
     font-size: 1rem;
+    margin: 0;
 }

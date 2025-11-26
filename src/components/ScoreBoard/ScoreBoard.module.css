@@ -1,10 +1,10 @@
 .container {
     background-color: var(--color-background-secondary);
+    padding: 20px;
     outline: 5px solid var(--color-accent-main);
     border-radius: 0.3rem;
     display: inline-block;
     white-space: nowrap;
-    padding: 10px;
     position: absolute;
     top: 0rem;
     right: -0.2rem;
@@ -30,4 +30,24 @@
     margin: 0;
     font-size: 1.5rem;
     font-weight: 600;
+}
+
+.buttons {
+    margin-top: 0.5rem;
+}
+
+.main-menu-button {
+    
+    border-radius: 0.3rem;
+    border: none;
+    outline: 0.4rem solid var(--color-accent-secondary);
+    color: white;
+    background-color: var(--color-background-main);
+    transition: 50ms;
+    font-size: 1.5rem;
+    width: 100%;
+}
+
+.main-menu-button:hover {
+    background-color: #555555;
 }

@@ -1,4 +1,6 @@
-import { useTimer  } from "../hooks/useTimer";
-import { useCardMatching } from "../hooks/useCardMatching";
+import useTimer from "./useTimer.jsx";
+import useGameProgress from "./useGameProgress.jsx";
+import useGameControl from "./useGameControl.jsx";
+import useResults from "./useResults.jsx";
 
-export { useTimer, useCardMatching }
+export { useTimer, useGameProgress, useGameControl, useResults }

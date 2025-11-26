@@ -4,7 +4,6 @@ import { defaultGameSettings } from "../config";
 const SettingsContext = createContext();
 
 function SettingsProvider({ children }) {
-
     const [cardCount, setCardCount] = useState(localStorage.getItem("cardCount") ?? defaultGameSettings.cardCount);
     const [isMoveLimited, setIsMoveLimited] = useState(localStorage.getItem("isMoveLimited") === "true");
     const [moveLimit, setMoveLimit] = useState(localStorage.getItem("moveLimit") ?? defaultGameSettings.moveLimit);
