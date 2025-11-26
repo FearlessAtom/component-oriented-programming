@@ -1,12 +1,9 @@
 import styles from "../Card/Card.module.css";
-import { useBoard } from "../../providers";
 
-function Card({card}) {
-    const board = useBoard();
-
+function Card({card, isFlipped, onFlip}) {
     return <div
-        className={styles.card + (board.isFlipped(card.cardId) ? " " + styles.flipped : "")}
-        onClick={ () => board.flipCard(card.cardId) }
+        className={styles.card + (isFlipped ? " " + styles.flipped : "")}
+        onClick={ onFlip }
     >
         <div className={styles.card_image + " " + styles.card_image_front}>
             <p className={styles.card_image_front_text}>?</p>
@@ -14,7 +11,7 @@ function Card({card}) {
 
         <img
             className={styles.card_image_flipped + " " + styles.card_image}
-            src={ "./src/assets/cards/" + card.cardImageName}
+            src={ "/src/assets/cards/" + card.cardImageName}
         />
     </div>
 }

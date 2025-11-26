@@ -6,7 +6,16 @@ function BoardContent()
     const board = useBoard();
     const settings = useSettings();
 
-    const cardElements = board.cards.map((card, i) => <Card card={card} key={i} />);
+    const cards = board.cards;
+
+    const cardElements = cards.map((card, i) => {
+        return <Card
+            card={card}
+            onFlip={() => board.flipCard(card.cardId)}
+            isFlipped={board.isFlipped(card.cardId)}
+            key={i}
+        />
+    });
 
     return <>
         <Board>

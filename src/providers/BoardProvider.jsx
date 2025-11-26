@@ -48,14 +48,21 @@ function BoardProvider({ children }) {
 
         else {
             setTimeout(() => {
-                setFlippedCards([]);
                 setCardsToMatchIds([]);
+
+                for (let i = flippedCards.length - 1; i >= 0; i--) {
+                    if (!matchedCards.includes(flippedCards[i])) {
+                        console.log(flippedCards[i]);
+                        unflipCard(flippedCards[i]);
+                    }
+                }
             }, 1000);
         }
     }, [cardsToMatchIds]);
 
     const isFlipped = (cardId) => flippedCards.includes(cardId);
     const getCardById = (cardId) => cards.find(card => card.cardId == cardId);
+    const unflipCard = (cardId) => setFlippedCards(prev => prev.filter(id => id !== cardId));
 
     const flipCard = (cardId) => {
         if (settings.isBoardLocked) return;
@@ -71,7 +78,7 @@ function BoardProvider({ children }) {
         setCardsToMatchIds([...cardsToMatchIds, cardId]);
     };
 
-    return <BoardContext.Provider value={{cards, flipCard, isFlipped, isGameResultsModalOpen, startGame, stopGame, endGame, resumeGame  }}>
+    return <BoardContext.Provider value={{cards, flipCard, isFlipped, isGameResultsModalOpen, startGame, stopGame, endGame, resumeGame }}>
         { children }
     </BoardContext.Provider>
 }

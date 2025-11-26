@@ -1,4 +1,5 @@
 import getCards from "../utils/getCards";
+import useResults from "./useResults";
 
 function useGameControl({
     cards,
@@ -11,6 +12,8 @@ function useGameControl({
     score,
     settings,
 }) {
+    const results = useResults();
+
     const startGame = () => {
         setFlippedCards([]);
         setMatchedCards([]);
@@ -44,7 +47,7 @@ function useGameControl({
     }
 
     const endGame = () => {
-        console.log(JSON.stringify(cards));
+        results.addResult(results.createResult(cards, score, settings));
         stopGame();
     }
 

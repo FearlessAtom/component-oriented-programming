@@ -1,5 +1,6 @@
-import useTimer from "../hooks/useTimer.jsx";
-import useGameProgress from "../hooks/useGameProgress.jsx";
-import useGameControl from "../hooks/useGameControl.jsx";
+import useTimer from "./useTimer.jsx";
+import useGameProgress from "./useGameProgress.jsx";
+import useGameControl from "./useGameControl.jsx";
+import useResults from "./useResults.jsx";
 
-export { useTimer, useGameProgress, useGameControl }
+export { useTimer, useGameProgress, useGameControl, useResults }
