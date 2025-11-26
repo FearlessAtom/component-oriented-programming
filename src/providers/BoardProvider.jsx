@@ -27,6 +27,7 @@ function BoardProvider({ children, refreshCards }) {
 
 
     const flipCard = (card) => {
+
         if (settings.isBoardLocked) return;
 
         if (matchedCards.map(card => card.cardId).includes(card.cardId)) return;
@@ -35,6 +36,7 @@ function BoardProvider({ children, refreshCards }) {
             if(flippedCards.length >= settings.cardsToMatch) return;
 
             card.setFlipped(true);
+            console.log(card);
             setFlippedCards([...flippedCards, card]);
         }
     };
@@ -59,6 +61,10 @@ function BoardProvider({ children, refreshCards }) {
             setMatchedCards([]);
             refreshCards();
         }, delay);
+    }
+
+    const endGame = () => {
+        stopGame();
     }
 
     const stopGame = () => {

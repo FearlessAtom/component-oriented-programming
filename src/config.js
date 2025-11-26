@@ -3,6 +3,7 @@ const gameSettings = {
     maxCardCount: 30,
 
     minCardsToMatch: 2,
+    maxCardsToMatch: 10,
     maxGridColumnCount: 6,
 }
 

@@ -30,4 +30,4 @@ function BoardContent(props)
     </>
 }
 
-export { BoardContent }
+export default BoardContent;

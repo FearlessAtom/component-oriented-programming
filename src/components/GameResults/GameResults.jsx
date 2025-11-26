@@ -1,10 +1,11 @@
-import { useBoard, useNavigation, useScore, useSettings } from "../../providers";
+import { useNavigate } from "react-router";
+import { useBoard, useScore, useSettings } from "../../providers";
 import styles from "../GameResults/GameResults.module.css";
 
 function GameResults() {
     const score = useScore();
     const settings = useSettings();
-    const navigation = useNavigation();
+    const navigate = useNavigate();
     const board = useBoard();
 
     return <div className={ styles.container }>
@@ -46,11 +47,11 @@ function GameResults() {
             </div>
 
             <div className={styles["button-container"]}>
-                <button className={styles.button} onClick={() => navigation.navigate("/")}>Main Menu</button>
+                <button className={styles.button} onClick={() => navigate("/")}>Main Menu</button>
                 <button className={styles.button} onClick={() => board.startGame()}>Restart</button>
             </div>
         </div>
     </div>
 }
 
-export { GameResults };
+export default GameResults;

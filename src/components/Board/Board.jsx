@@ -5,7 +5,7 @@ const getGridColumnCount = (cardCount) => {
     let root = Math.floor(Math.sqrt(cardCount));
 
     while (cardCount % root != 0) {
-        root = root - 1
+        root = root - 1;
     }
 
     return Number(cardCount / root);
@@ -24,4 +24,4 @@ function Board({ children }) {
     );
 }
 
-export { Board };
+export default Board;

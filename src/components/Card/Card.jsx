@@ -1,20 +1,17 @@
 import styles from "../Card/Card.module.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useBoard } from "../../providers";
+import { get_uuid } from "../../utils/utils";
 
-function Card({cardImageName}) {
+function Card(props) {
     const [flipped, setFlipped] = useState(false);
-    const [cardId, setCardId] = useState(""); 
+    const [cardId, setCardId] = useState(get_uuid());
 
     const board = useBoard();
 
-    useEffect(() => {
-        setCardId(Math.random());
-    }, []);
-
     return <div
         className={styles.card + (flipped ? " " + styles.flipped : "")}
-        onClick={ () => board.flipCard({ cardImageName, cardId, setFlipped, flipped }) }
+        onClick={ () => board.flipCard({ cardImageName: props.cardImageName , cardId, setFlipped, flipped }) }
     >
         <div className={styles.card_image + " " + styles.card_image_front}>
             <p className={styles.card_image_front_text}>?</p>
@@ -22,9 +19,9 @@ function Card({cardImageName}) {
 
         <img
             className={styles.card_image_flipped + " " + styles.card_image}
-            src={ "./src/assets/cards/" + cardImageName}
+            src={ "./src/assets/cards/" + props.cardImageName}
         />
     </div>
 }
 
-export { Card };
+export default Card;

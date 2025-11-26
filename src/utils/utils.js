@@ -10,4 +10,13 @@ function shuffle(array)
     return array;
 }
 
-export { shuffle }
+function get_uuid() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+    .replace(/[xy]/g, function (c) {
+        const r = Math.random() * 16 | 0, 
+            v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
+
+export { shuffle, get_uuid }
