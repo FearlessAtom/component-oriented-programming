@@ -1,10 +1,12 @@
-import { useState, createContext, useContext } from "react";
+import { useState, createContext, useContext, useEffect } from "react";
 import { useSettings, useScore } from "../providers";
-import { useCardMatching } from "../hooks";
+import { useGameControl, useGameProgress } from "../hooks";
 
 const BoardContext = createContext();
 
-function BoardProvider({ children, refreshCards }) {
+function BoardProvider({ children }) {
+    const [cards, setCards] = useState([]);
+    const [cardsToMatchIds, setCardsToMatchIds] = useState([]);
     const [flippedCards, setFlippedCards] = useState([]);
     const [matchedCards, setMatchedCards] = useState([]);
     const [isGameResultsModalOpen, setIsGameResultsModalOpen] = useState(false);
@@ -12,78 +14,64 @@ function BoardProvider({ children, refreshCards }) {
     const score = useScore();
     const settings = useSettings();
 
-    const resetCard = (cardId) => {
-        const index = flippedCards.map(card => card.cardId).indexOf(cardId);
+    const {startGame, stopGame, resumeGame, endGame} = useGameControl({
+        cards,
+        setCards,
+        setFlippedCards,
+        setMatchedCards,
+        setCardsToMatchIds,
+        setIsGameResultsModalOpen,
+        matchedCards,
+        score,
+        settings,
+    });
 
-        if (index == -1) return;
+    useGameProgress({endGame, matchedCards, score, settings});
 
-        const card = flippedCards[index];
+    useEffect(startGame, []);
 
-        card.setFlipped(false);
+    useEffect(() => {
+        if (cardsToMatchIds.length < settings.cardsToMatch) return;
 
-        flippedCards.splice(flippedCards.map(card => card.cardId).indexOf(cardId), 1);
-        setFlippedCards(flippedCards);
-    }
+        score.setMoves(previous_value => previous_value + 1);
 
+        let matched = true;
 
-    const flipCard = (card) => {
-
-        if (settings.isBoardLocked) return;
-
-        if (matchedCards.map(card => card.cardId).includes(card.cardId)) return;
-
-        if (!flippedCards.map(card => card.cardId).includes(card.cardId)) {
-            if(flippedCards.length >= settings.cardsToMatch) return;
-
-            card.setFlipped(true);
-            console.log(card);
-            setFlippedCards([...flippedCards, card]);
+        for (let i = 0; i < cardsToMatchIds.length - 1; i++) {
+            if (getCardById(cardsToMatchIds[i]).cardImageName != getCardById(cardsToMatchIds[i + 1]).cardImageName) matched = false;
         }
+
+        if (matched) {
+            setMatchedCards([...matchedCards, ...cardsToMatchIds]);
+            setCardsToMatchIds([]);
+        }
+
+        else {
+            setTimeout(() => {
+                setFlippedCards([]);
+                setCardsToMatchIds([]);
+            }, 1000);
+        }
+    }, [cardsToMatchIds]);
+
+    const isFlipped = (cardId) => flippedCards.includes(cardId);
+    const getCardById = (cardId) => cards.find(card => card.cardId == cardId);
+
+    const flipCard = (cardId) => {
+        if (settings.isBoardLocked) return;
+        if (settings.isMoveLimited && score.moves - settings.moveLimit == 0) return;
+
+        if (matchedCards.includes(cardId)) return;
+        if (flippedCards.includes(cardId)) return;
+        if (cardsToMatchIds.includes(cardId)) return;
+
+        if(cardsToMatchIds.length >= settings.cardsToMatch) return;
+
+        setFlippedCards([...flippedCards, cardId]);
+        setCardsToMatchIds([...cardsToMatchIds, cardId]);
     };
 
-    const unflipCards = () => {
-        for (let i = 0; i < matchedCards.length; i++) {
-            matchedCards[i].setFlipped(false);
-        }
-    }
-
-    const startGame = () => {
-        unflipCards();
-        setIsGameResultsModalOpen(false);
-
-        const delay = matchedCards != 0 ? 500 : 0;
-
-        setTimeout(() => {
-            score.resetScore();
-            settings.setIsBoardLocked(false);
-            settings.setIsGameGoing(true);
-            setFlippedCards([]);
-            setMatchedCards([]);
-            refreshCards();
-        }, delay);
-    }
-
-    const endGame = () => {
-        stopGame();
-    }
-
-    const stopGame = () => {
-        setIsGameResultsModalOpen(true);
-        settings.setIsBoardLocked(true);
-        settings.setIsGameGoing(false);
-        score.timerStop();
-    }
-
-    const resumeGame = () => {
-        setIsGameResultsModalOpen(false);
-        settings.setIsBoardLocked(false);
-        settings.setIsGameGoing(true);
-        score.timerStart();
-    }
-
-    useCardMatching({ startGame, stopGame, resetCard, matchedCards, setMatchedCards, flippedCards, setFlippedCards });
-
-    return <BoardContext.Provider value={{ flipCard, isGameResultsModalOpen, startGame, stopGame,  stopGame}}>
+    return <BoardContext.Provider value={{cards, flipCard, isFlipped, isGameResultsModalOpen, startGame, stopGame, endGame, resumeGame  }}>
         { children }
     </BoardContext.Provider>
 }

@@ -2,8 +2,6 @@ import { useState } from "react";
 import styles from "../Slider/Slider.module.css";
 
 function Slider({min, max, register, initialValue}) {
-    console.log(initialValue);
-
     const [value, setValue] = useState(initialValue);
 
     return <div className={styles.container}>

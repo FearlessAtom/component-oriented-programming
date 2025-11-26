@@ -11,17 +11,14 @@ const getGridColumnCount = (cardCount) => {
     return Number(cardCount / root);
 }
 
-
 function Board({ children }) {
     const settings = useSettings();
     
     const gridColumnCount = getGridColumnCount(settings.cardCount);
 
-    return (
-        <div  className={styles.board} style={{ gridTemplateColumns: `repeat(${gridColumnCount}, 1fr)` }}> 
-            {children}
-        </div>
-    );
+    return <div className={styles.board} style={{ gridTemplateColumns: `repeat(${gridColumnCount}, 1fr)` }}>
+        {children}
+    </div>
 }
 
 export default Board;

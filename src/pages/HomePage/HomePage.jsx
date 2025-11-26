@@ -66,8 +66,8 @@ function HomePage() {
 
                 {settings.isMoveLimited &&
                     <>
-
-                        <Slider initialValue={settings.moveLimit} register={register("moveLimit",
+                        <Slider min={gameSettings.minCardCount / gameSettings.minCardsToMatch}
+                            initialValue={settings.moveLimit} register={register("moveLimit",
                             { required: true, onBlur: (e) => settings.saveMoveLimit(e.target.value), validate: value => {
                                 if (value * 2 < cardCount) return "Move limit must be at least half of the number of cards!";
                                 return true;
