@@ -12,12 +12,14 @@ const getGridColumnCount = (cardCount) => {
 }
 
 function Board({ children }) {
-    const cardCount = useSettingsStore(state => state.cardCount);
+    const { cardCount } = useSettingsStore(state => state.settingsSnapshot);
+
+    console.log(cardCount);
 
     const gridColumnCount = getGridColumnCount(cardCount);
 
     return <div className={styles.board} style={{ gridTemplateColumns: `repeat(${gridColumnCount}, 1fr)` }}>
-        {children}
+        { children }
     </div>
 }
 

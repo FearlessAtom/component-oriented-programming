@@ -1,6 +1,7 @@
-import {create} from "zustand";
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
-const useBoardStore = create((set) => ({
+const useBoardStore = create(persist((set) => ({
     cards: [],
     setCards: (value) => set({cards:value}),
 
@@ -15,6 +16,6 @@ const useBoardStore = create((set) => ({
 
     isGameResultsModalOpen: false,
     setIsGameResultsModalOpen: (value) => set({isGameResultsModalOpen: value}),
-}));
+}), { name: "board-storage" }));
 
 export default useBoardStore;

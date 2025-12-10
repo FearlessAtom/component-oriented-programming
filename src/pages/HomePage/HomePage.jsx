@@ -5,17 +5,27 @@ import { ErrorMessage } from "@hookform/error-message";
 import { useNavigate } from "react-router";
 import Slider from "../../components/Slider/Slider";
 import { useSettingsStore } from "../../stores";
+import { useGameControl } from "../../hooks";
 
 function HomePage() {
+    const cardCount = useSettingsStore(state => state.cardCount);
+    const setCardCount = useSettingsStore(state => state.setCardCount);
+    const cardsToMatch = useSettingsStore(state => state.cardsToMatch);
+    const setCardsToMatch = useSettingsStore(state => state.setCardsToMatch);
+    const isMoveLimited = useSettingsStore(state => state.isMoveLimited);
+    const setIsMoveLimited = useSettingsStore(state => state.setIsMoveLimited);
+    const moveLimit = useSettingsStore(state => state.moveLimit);
+    const setMoveLimit = useSettingsStore(state => state.setMoveLimit);
+    const isGameGoing = useSettingsStore(state => state.isGameGoing);
 
-    const {
-        cardCount, setCardCount,
-        cardsToMatch, setCardsToMatch,
-        isMoveLimited, setIsMoveLimited,
-        moveLimit, setMoveLimit
-    } = useSettingsStore();
+    const { resetGame } = useGameControl();
 
     const navigate = useNavigate();
+
+    const onPlay = () => {
+        resetGame();
+        navigate("/game");
+    }
 
     const { register, handleSubmit, formState: { errors } } = useForm({
         mode: "onBlur",
@@ -24,7 +34,7 @@ function HomePage() {
 
     return <div className={styles.container}>
         <div>
-            <form onSubmit={handleSubmit(() => navigate("/game"))} className={styles["modal-window"]}>
+            <form onSubmit={handleSubmit(onPlay)} className={styles["modal-window"]}>
                 <p style={{margin: "0 0 1rem 0"}} className={styles.label}>Number of cards</p>
 
                 <Slider min={gameSettings.minCardCount} max={gameSettings.maxCardCount} initialValue={cardCount}
@@ -79,8 +89,20 @@ function HomePage() {
                     </>
                 }
 
-                <input type="submit" className={styles["button"] + " " + styles["play-button"]} value="Play" />
+                { isGameGoing ?
+                    <input type="submit" className={styles["button"] + " " + styles["play-button"]} value="New Game" />
+                    :
+                    <input type="submit" className={styles["button"] + " " + styles["play-button"]} value="Play" />
+                }
             </form>
+
+            { isGameGoing &&
+
+                <button className={styles["button"] + " " + styles["results-button"]}
+                     onClick={() => navigate("/game")}
+                >Continue</button>
+            }
+            
 
             <button className={styles["button"] + " " + styles["results-button"]}
                  onClick={() => navigate("/results")}

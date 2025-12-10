@@ -1,25 +1,34 @@
 import { useEffect } from "react";
-import { useSettingsStore } from "../stores";
+import { useBoardStore, useScoreStore, useSettingsStore } from "../stores";
+import useGameControl from "./useGameControl";
 
-function useGameProgress({endGame, matchedCards, score, settings}) {
-    const {cardCount, isMoveLimited, moveLimit} = useSettingsStore();
+function useGameProgress() {
+    const { matchedCards } = useBoardStore();
+
+    const moves = useScoreStore(state => state.moves);
+    const percentage = useScoreStore(state => state.percentage);
+    const setPercentage = useScoreStore(state => state.setPercentage);
+
+    const { endGame } = useGameControl();
+
+    const { isMoveLimited, moveLimit, cardCount } = useSettingsStore(state => state.settingsSnapshot);
 
     useEffect (() => {
-        if (!(isMoveLimited && moveLimit - score.moves == 0)) return;
+        if (!(isMoveLimited && moveLimit - moves == 0)) return;
 
         setTimeout(endGame, 500);
-    }, [score.moves]);
+    }, [moves]);
 
     useEffect(() => {
-        if (score.percentage != 100) return;
+        if (percentage != 100) return;
 
         setTimeout(endGame, 500);
-    }, [score.percentage]);
+    }, [percentage]);
 
     useEffect(() => {
         const percentage = matchedCards.length / cardCount * 100;
 
-        score.setPercentage(Math.floor(percentage));
+        setPercentage(Math.floor(percentage));
     }, [matchedCards]);
 }
 

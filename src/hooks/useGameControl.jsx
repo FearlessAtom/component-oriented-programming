@@ -1,63 +1,93 @@
-import { useBoardStore, useSettingsStore } from "../stores";
 import getCards from "../utils/getCards";
-import useResults from "./useResults";
+import { useBoardStore, useScoreStore, useSettingsStore } from "../stores";
+import { get_uuid } from "../utils/utils";
+import { useResultsStore, useTimerStore } from "../stores";
 
-function useGameControl({ score }) {
-    const {
-        cards, setCards,
-        matchedCards, setMatchedCards,
-        setFlippedCards, setCardsToMatchIds,
-        setIsGameResultsModalOpen,
-    } = useBoardStore();
+function useGameControl() {
+    const cards = useBoardStore(state => state.cards);
+    const setCards = useBoardStore(state => state.setCards);
+    const matchedCards = useBoardStore(state => state.matchedCards);
+    const setMatchedCards = useBoardStore(state => state.setMatchedCards);
+    const setFlippedCards = useBoardStore(state => state.setFlippedCards);
+    const setCardsToMatchIds = useBoardStore(state => state.setCardsToMatchIds);
+    const setIsGameResultsModalOpen = useBoardStore(state => state.setIsGameResultsModalOpen);
 
-    const {
-        cardCount,
-        cardsToMatch,
-        setIsBoardLocked,
-        setIsGameGoing
-    } = useSettingsStore();
+    const cardsToMatch = useSettingsStore(state => state.cardsToMatch);
+    const isMoveLimited = useSettingsStore(state => state.isMoveLimited);
+    const moveLimit = useSettingsStore(state => state.moveLimit);
+    const isGameGoing = useSettingsStore(state => state.isGameGoing);
+    const setIsGameGoing = useSettingsStore(state => state.setIsGameGoing);
+    const setIsBoardLocked = useSettingsStore(state => state.setIsBoardLocked);
+    const syncSettingsSnapshot = useSettingsStore(state => state.syncSettingsSnapshot);
 
-    const results = useResults();
+    const moves = useScoreStore(state => state.moves);
+    const percentage = useScoreStore(state => state.percentage);
+
+    const startTimer = useTimerStore(state => state.start);
+    const resetTimer = useTimerStore(state => state.reset);
+
+    const { resetScore } = useScoreStore();
+
+    const addResult  = useResultsStore(state => state.addResult);
+
+    const {  } = useSettingsStore(state => state.settingsSnapshot);
 
     const startGame = () => {
-        setCards([]);
-        setFlippedCards([]);
-        setMatchedCards([]);
-        setCardsToMatchIds([]);
-        setIsGameResultsModalOpen(false);
-        score.resetScore();
-
         const delay = matchedCards.length != 0 ? 500 : 0;
 
         setTimeout(() => {
-            setIsBoardLocked(false);
+            if (!useSettingsStore.getState().isGameGoing) {
+                console.log("sync");
+                syncSettingsSnapshot();
+
+                setCards(getCards(useSettingsStore.getState().settingsSnapshot.cardCount,
+                    useSettingsStore.getState().settingsSnapshot.cardsToMatch));
+                
+                setIsBoardLocked(false);
+            }
+
+            startTimer();
             setIsGameGoing(true);
-            setCards(getCards(cardCount, cardsToMatch));
         }, delay);
-        
-        setIsGameGoing(true);
+    }
+
+    const resetGame = () => {
+        setFlippedCards([]);
+        setMatchedCards([]);
+        setIsGameGoing(false);
+        setCardsToMatchIds([]);
+        setIsGameResultsModalOpen(false);
+        resetScore();
+        resetTimer()
     }
 
     const stopGame = () => {
         setIsGameResultsModalOpen(true);
         setIsBoardLocked(true);
         setIsGameGoing(false);
-        score.timerStop();
     }
 
     const resumeGame = () => {
         setIsGameResultsModalOpen(false);
         setIsBoardLocked(false);
         setIsGameGoing(true);
-        score.timerStart();
     }
 
     const endGame = () => {
-        results.addResult(results.createResult(cards, score));
+        addResult({
+            id: get_uuid(),
+            cards,
+            moves,
+            isMoveLimited,
+            moveLimit,
+            cardsToMatch,
+            percentage
+        });
+
         stopGame();
     }
 
-    return { startGame, stopGame, resumeGame, endGame };
+    return { startGame, stopGame, resumeGame, endGame, resetGame };
 }
 
 export default useGameControl;

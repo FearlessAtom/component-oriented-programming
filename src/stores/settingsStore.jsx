@@ -20,6 +20,26 @@ const useSettingsStore = create(persist((set) => ({
 
     isGameGoing: false,
     setIsGameGoing: (value) => set({ isGameGoing: value }),
-})));
+
+    settingsSnapshot: {
+        cardCount: defaultGameSettings.cardCount,
+        cardsToMatch: defaultGameSettings.cardsToMatch,
+        isMoveLimited: false,
+        moveLimit: defaultGameSettings.moveLimit,
+        isBoardLocked: false,
+        isGameGoing: false,
+    },
+
+    syncSettingsSnapshot: () => set(state => ({
+        settingsSnapshot: Object.freeze({
+            cardCount: state.cardCount,
+            cardsToMatch: state.cardsToMatch,
+            isMoveLimited: state.isMoveLimited,
+            moveLimit: state.moveLimit,
+            isBoardLocked: state.isBoardLocked,
+            isGameGoing: state.isGameGoing,
+        }),
+    })),
+}), { name: "settigns-storage" }));
 
 export default useSettingsStore;
