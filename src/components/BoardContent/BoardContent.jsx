@@ -1,30 +1,30 @@
-import { useBoard, useSettings } from "../../providers"
 import { GameResults, Modal, Portal, ScoreBoard, Card, Board } from "../";
+import { useBoard } from "../../hooks";
+import { useBoardStore, useSettingsStore } from "../../stores";
 
 function BoardContent()
 {
-    const board = useBoard();
-    const settings = useSettings();
-
-    const cards = board.cards;
+    const { flipCard, isFlipped } = useBoard();
+    const { cards, isGameResultsModalOpen } = useBoardStore();
+    const { isGameGoing } = useSettingsStore();
 
     const cardElements = cards.map((card, i) => {
         return <Card
             card={card}
-            onFlip={() => board.flipCard(card.cardId)}
-            isFlipped={board.isFlipped(card.cardId)}
+            onFlip={() => flipCard(card.cardId)}
+            isFlipped={isFlipped(card.cardId)}
             key={i}
         />
     });
 
     return <>
         <Board>
-            {cardElements}
+            { cardElements }
 
-            {settings.isGameGoing && <ScoreBoard />}
+            { isGameGoing && <ScoreBoard /> }
         </Board>
 
-        {board.isGameResultsModalOpen &&
+        { isGameResultsModalOpen &&
             <Portal>
                 <Modal>
                     <GameResults></GameResults>

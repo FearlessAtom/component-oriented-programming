@@ -1,8 +1,11 @@
 import { useEffect } from "react";
+import { useSettingsStore } from "../stores";
 
 function useGameProgress({endGame, matchedCards, score, settings}) {
+    const {cardCount, isMoveLimited, moveLimit} = useSettingsStore();
+
     useEffect (() => {
-        if (!(settings.isMoveLimited && settings.moveLimit - score.moves == 0)) return;
+        if (!(isMoveLimited && moveLimit - score.moves == 0)) return;
 
         setTimeout(endGame, 500);
     }, [score.moves]);
@@ -14,7 +17,7 @@ function useGameProgress({endGame, matchedCards, score, settings}) {
     }, [score.percentage]);
 
     useEffect(() => {
-        const percentage = matchedCards.length / settings.cardCount * 100;
+        const percentage = matchedCards.length / cardCount * 100;
 
         score.setPercentage(Math.floor(percentage));
     }, [matchedCards]);

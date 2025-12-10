@@ -1,7 +1,9 @@
+import { useSettingsStore } from "../stores";
 import { get_uuid } from "../utils/utils";
 
 function useResults() {
-
+    const {cardsToMatch, isMoveLimited, moveLimit} = useSettingsStore();
+    
     const getResults = () => {
         return JSON.parse(localStorage.getItem("results")) ?? [];
     }
@@ -20,20 +22,19 @@ function useResults() {
         localStorage.setItem("results", JSON.stringify(results));
     }
 
-    const createResult = (cards, score, settings) => {
+    const createResult = (cards, score) => {
         return {
             id: get_uuid(),
             cards: cards,
             moves: score.moves,
-            isMoveLimited: settings.isMoveLimited,
-            moveLimit: settings.moveLimit,
-            cardsToMatch: settings.cardsToMatch,
+            isMoveLimited,
+            moveLimit,
+            cardsToMatch,
             percentage: score.percentage
         }
     }
 
     return {getResults, getResult, addResult, createResult}
-
 }
 
 export default useResults;

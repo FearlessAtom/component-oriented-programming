@@ -1,12 +1,20 @@
-import { useNavigate } from "react-router";
-import { useBoard, useScore, useSettings } from "../../providers";
 import styles from "../GameResults/GameResults.module.css";
+import { useNavigate } from "react-router";
+import { useScore } from "../../providers";
+import { useGameControl } from "../../hooks";
+import { useSettingsStore } from "../../stores";
 
 function GameResults() {
     const score = useScore();
-    const settings = useSettings();
     const navigate = useNavigate();
-    const board = useBoard();
+
+    const { isMoveLimited, moveLimit } = useSettingsStore();
+    const { startGame } = useGameControl({ score });
+
+    const goToMainMenu = () => {
+        score.resetScore();
+        navigate("/");
+    };
 
     return <div className={ styles.container }>
         <div className={ styles.game_results}>
@@ -22,14 +30,14 @@ function GameResults() {
             </div>
 
             <div className={styles["value-container"]}>
-                {settings.isMoveLimited ?
+                {isMoveLimited ?
                     <>
-                    {score.percentage != 100 && settings.moveLimit - score.moves == 0 ?
+                    {score.percentage != 100 && moveLimit - score.moves == 0 ?
                         <p className={styles.value + " " + styles["color-loss"]} >You ran out of moves!</p>
                         :
                         <>
                             <p className={styles.label}>Moves: </p>
-                            <p className={styles.value}>{ settings.moveLimit - score.moves } left out of { settings.moveLimit }</p>
+                            <p className={styles.value}>{ moveLimit - score.moves } left out of { moveLimit }</p>
                         </>
                     }
                     </>
@@ -47,8 +55,8 @@ function GameResults() {
             </div>
 
             <div className={styles["button-container"]}>
-                <button className={styles.button} onClick={() => navigate("/")}>Main Menu</button>
-                <button className={styles.button} onClick={() => board.startGame()}>Restart</button>
+                <button className={styles.button} onClick={goToMainMenu}>Main Menu</button>
+                <button className={styles.button} onClick={startGame}>Restart</button>
             </div>
         </div>
     </div>

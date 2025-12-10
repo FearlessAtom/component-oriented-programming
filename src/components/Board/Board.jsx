@@ -1,4 +1,4 @@
-import { useSettings } from "../../providers";
+import { useSettingsStore } from "../../stores";
 import styles from "../Board/Board.module.css";
 
 const getGridColumnCount = (cardCount) => {
@@ -12,9 +12,9 @@ const getGridColumnCount = (cardCount) => {
 }
 
 function Board({ children }) {
-    const settings = useSettings();
-    
-    const gridColumnCount = getGridColumnCount(settings.cardCount);
+    const cardCount = useSettingsStore(state => state.cardCount);
+
+    const gridColumnCount = getGridColumnCount(cardCount);
 
     return <div className={styles.board} style={{ gridTemplateColumns: `repeat(${gridColumnCount}, 1fr)` }}>
         {children}

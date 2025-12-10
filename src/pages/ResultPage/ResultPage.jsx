@@ -11,8 +11,6 @@ function ResultPage() {
 
     const cards = result.cards;
 
-    console.log(cards);
-
     const cardElements = cards.map((card, i) => <Card card={card} isFlipped={true} key={i} />);
 
     return <div className={styles.container}>

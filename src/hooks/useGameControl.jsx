@@ -1,53 +1,59 @@
+import { useBoardStore, useSettingsStore } from "../stores";
 import getCards from "../utils/getCards";
 import useResults from "./useResults";
 
-function useGameControl({
-    cards,
-    setCards,
-    setFlippedCards,
-    setMatchedCards,
-    setCardsToMatchIds,
-    setIsGameResultsModalOpen,
-    matchedCards,
-    score,
-    settings,
-}) {
+function useGameControl({ score }) {
+    const {
+        cards, setCards,
+        matchedCards, setMatchedCards,
+        setFlippedCards, setCardsToMatchIds,
+        setIsGameResultsModalOpen,
+    } = useBoardStore();
+
+    const {
+        cardCount,
+        cardsToMatch,
+        setIsBoardLocked,
+        setIsGameGoing
+    } = useSettingsStore();
+
     const results = useResults();
 
     const startGame = () => {
+        setCards([]);
         setFlippedCards([]);
         setMatchedCards([]);
-        setCardsToMatchIds([])
+        setCardsToMatchIds([]);
         setIsGameResultsModalOpen(false);
+        score.resetScore();
 
         const delay = matchedCards.length != 0 ? 500 : 0;
 
         setTimeout(() => {
-            score.resetScore();
-            settings.setIsBoardLocked(false);
-            settings.setIsGameGoing(true);
-            setCards(getCards(settings));
+            setIsBoardLocked(false);
+            setIsGameGoing(true);
+            setCards(getCards(cardCount, cardsToMatch));
         }, delay);
         
-        settings.setIsGameGoing(true);
+        setIsGameGoing(true);
     }
 
     const stopGame = () => {
         setIsGameResultsModalOpen(true);
-        settings.setIsBoardLocked(true);
-        settings.setIsGameGoing(false);
+        setIsBoardLocked(true);
+        setIsGameGoing(false);
         score.timerStop();
     }
 
     const resumeGame = () => {
         setIsGameResultsModalOpen(false);
-        settings.setIsBoardLocked(false);
-        settings.setIsGameGoing(true);
+        setIsBoardLocked(false);
+        setIsGameGoing(true);
         score.timerStart();
     }
 
     const endGame = () => {
-        results.addResult(results.createResult(cards, score, settings));
+        results.addResult(results.createResult(cards, score));
         stopGame();
     }
 
