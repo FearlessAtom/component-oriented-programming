@@ -1,8 +1,8 @@
 import getCardImageNames from "./getCardImageNames";
 import { get_uuid } from "./utils";
 
-function getCards (settings) {
-    const cardImageNames = getCardImageNames(settings.cardCount, settings.cardsToMatch);
+function getCards (cardCount, cardsToMatch) {
+    const cardImageNames = getCardImageNames(cardCount, cardsToMatch);
 
     const cardsData = cardImageNames.map((cardImageName, i) => {
         return {

@@ -1,13 +1,12 @@
 import { useNavigate } from "react-router";
 import ResultEntry from "../../components/ResultEntry/ResultEntry";
-import { useResults } from "../../hooks";
 import styles from "../ResultsPage/ResultsPage.module.css";
+import { useResultsStore } from "../../stores";
 
 function ResultsPage() {
-    const resultsHook = useResults();
     const navigate = useNavigate();
 
-    const results = resultsHook.getResults();
+    const results = useResultsStore(state => state.results);
 
     let resultEntries = results.map((result, index) => {
         return <ResultEntry onClick={() => navigate("/results/" + result.id)}

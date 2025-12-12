@@ -1,6 +1,6 @@
 import styles from "../Card/Card.module.css";
 
-function Card({card, isFlipped, onFlip}) {
+function Card({ card, isFlipped, onFlip}) {
     return <div
         className={styles.card + (isFlipped ? " " + styles.flipped : "")}
         onClick={ onFlip }

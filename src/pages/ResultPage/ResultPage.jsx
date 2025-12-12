@@ -1,22 +1,21 @@
 import { useParams } from "react-router";
-import { useResults } from "../../hooks";
 import { Board, Card } from "../../components";
 import styles from "../ResultPage/ResultPage.module.css"
+import useResultsStore from "../../stores/resultsStore";
 
 function ResultPage() {
-    const {resultId} = useParams();
+    const { resultId } = useParams();
 
-    const results = useResults();
-    const result = results.getResult(resultId);
+    const findResultById = useResultsStore(state => state.findResultById);
 
-    const cards = result.cards;
+    const result = findResultById(resultId);
 
-    console.log(cards);
+    const cards = result ? result.cards : [];
 
-    const cardElements = cards.map((card, i) => <Card card={card} isFlipped={true} key={i} />);
+    const cardElements = cards.map((card, i) => <Card card={ card } isFlipped={ true } key={ i } />);
 
-    return <div className={styles.container}>
-        <Board>{cardElements}</Board>
+    return <div className={ styles.container }>
+        <Board>{ cardElements }</Board>
     </div>
 }
 
