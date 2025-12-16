@@ -15,7 +15,6 @@ function useGameControl() {
     const cardsToMatch = useSettingsStore(state => state.cardsToMatch);
     const isMoveLimited = useSettingsStore(state => state.isMoveLimited);
     const moveLimit = useSettingsStore(state => state.moveLimit);
-    const isGameGoing = useSettingsStore(state => state.isGameGoing);
     const setIsGameGoing = useSettingsStore(state => state.setIsGameGoing);
     const setIsBoardLocked = useSettingsStore(state => state.setIsBoardLocked);
     const syncSettingsSnapshot = useSettingsStore(state => state.syncSettingsSnapshot);
@@ -25,6 +24,7 @@ function useGameControl() {
 
     const startTimer = useTimerStore(state => state.start);
     const resetTimer = useTimerStore(state => state.reset);
+    const stopTimer = useTimerStore(state => state.stop);
 
     const { resetScore } = useScoreStore();
 
@@ -65,6 +65,7 @@ function useGameControl() {
         setIsGameResultsModalOpen(true);
         setIsBoardLocked(true);
         setIsGameGoing(false);
+        stopTimer();
     }
 
     const resumeGame = () => {
