@@ -1,9 +1,20 @@
-*
-{
-    box-sizing: border-box;
+:root {
+    --color-background-main: #181818;
+    --color-background-secondary: #F6E71D;
+    
+    --color-accent-main: #b79d07;
+    --color-accent-secondary: #020202;
+
+    --color-danger: #BA0000;
+    --color-success: #018403;
 }
 
-.navbar
-{
-    margin-bottom: 5px;
+body {
+    background-color: var(--color-background-main);
+    font-family: Verdana;
+    margin: 0;
+}
+
+* {
+    box-sizing: border-box;
 }

@@ -1,28 +1,22 @@
 import "./App.css";
-import { useState } from "react";
-import { HomePage, GamePage, ResultsPage} from "./pages";
+import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router";
+import { HomePage, GamePage, ResultsPage } from "./pages";
+import ResultPage from "./pages/ResultPage/ResultPage";
 
-function App()
-{
-    const [currentPath, setCurrentPath] = useState("/");
+function App() {
 
-    const navigate = (path) =>
-    {
-        window.history.pushState({}, "", path);
-        setCurrentPath(path);
-    }
-
-    return <>
-        <nav className="navbar">
-            <button onClick={() => navigate("/")}>Home</button>
-            <button onClick={() => navigate("/game")}>Game</button>
-            <button onClick={() => navigate("/results")}>Resuls</button>
-        </nav>
-
-        { currentPath == "/" && <HomePage navigate={ navigate } /> }
-        { currentPath == "/game" && <GamePage /> }
-        { currentPath == "/results" && <ResultsPage /> }
-    </>
+    return  <RouterProvider router={ 
+        createBrowserRouter(
+            createRoutesFromElements(
+                <>
+                    <Route path="/" element={ <HomePage /> } />
+                    <Route path="/game" element={ <GamePage /> } />
+                    <Route path="/results" element={ <ResultsPage /> } />
+                    <Route path="/results/:resultId" element={ <ResultPage /> } />
+                </>
+            )
+        )
+    } />
 }
 
-export default App
+export default App;

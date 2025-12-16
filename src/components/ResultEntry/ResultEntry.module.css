@@ -1,0 +1,110 @@
+.result_card {
+    background-color: var(--color-background-secondary);
+    border: 5px solid var(--color-accent-main);
+    border-radius: 1rem;
+    padding: 25px;
+    transition: 150ms;
+    margin-bottom: 20px;
+}
+
+.result_card:hover {
+    background-color: #fcf150;
+}
+
+.result_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--color-accent-secondary, #020202);
+}
+
+.result_title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.result_number {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--color-accent-secondary, #020202);
+}
+
+.badge {
+    border-radius: 0.6rem;
+    padding: 8px 18px;
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.badge_victory {
+    background-color: var(--color-success);
+    color: var(--color-background-primary);
+    border: 2px solid var(--color-accent-secondary);
+}
+
+.badge_loss{
+    background-color: var(--color-danger);
+    color: var(--color-background-primar);
+    border: 2px solid var(--color-accent-secondary);
+}
+
+.result_stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 25px;
+}
+
+.stat_item {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat_info {
+    flex: 1;
+}
+
+.stat_title {
+    font-size: 1.2rem;
+    color: var(--color-accent-secondary, #020202);
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+}
+
+.stat_number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--color-accent-secondary, #020202);
+}
+
+.result_footer {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 2px solid var(--color-accent-secondary, #020202);
+}
+
+.info_badge {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: var(--color-accent-secondary, #020202);
+    color: var(--color-background-secondary, #F6E71D);
+    font-size: 0.75rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+@media (max-width: 768px) {
+    .result_stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .result_header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}

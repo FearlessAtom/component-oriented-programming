@@ -1,11 +1,11 @@
-.board
-{
+.board {
+    outline: 5px solid var(--color-accent-main);
+    border-radius: 0.5rem;
+    background-color: var(--color-background-secondary);
     display: grid;
     position: relative;
-    grid-template-columns: repeat(5, 1fr);
     justify-content: center;
     align-items: center;
     gap: 1rem;
     padding: 1rem;
-    outline: 5px solid black;
 }
