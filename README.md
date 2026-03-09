@@ -17,6 +17,9 @@ npm install
 npm run dev
 ```
 
+### Privacy
+This project is compliant with GDPR regulations. We do not collect personal data or use user accounts. For more details on cookie usage and project restrictions, please refer to our [Privacy Policy](./PRIVACY.txt).
+
 ### Creator
 
 Fullname: Oleksiy Semenchyk  
