@@ -16,7 +16,7 @@ function ResultsPage() {
     resultEntries = resultEntries.reverse();
 
     return <div className={styles["container"]}>
-        {resultEntries}
+        { resultEntries }
     </div>
 }
 
