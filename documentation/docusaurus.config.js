@@ -28,7 +28,7 @@ const config = {
                     sidebarPath: "./sidebars.js",
                     editUrl: "https://github.com/fearlessatom/component-oriented-programming",
                 },
-                blogs: false,
+                blog: false,
                 theme: {
                     customCss: "./src/css/custom.css",
                 },
