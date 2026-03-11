@@ -39,7 +39,7 @@ function GamePage() {
     }, [location.pathname]);
 
     return <div className={styles["board-container"]}>
-        <Board>
+        <Board cardCount={ useSettingsStore(state => state.settingsSnapshot).cardCount }>
             { cardElements }
             { isGameGoing && <ScoreBoard /> }
         </Board>

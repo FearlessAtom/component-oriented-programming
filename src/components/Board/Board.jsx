@@ -1,4 +1,4 @@
-import { useSettingsStore } from "../../stores";
+import { Children } from "react";
 import styles from "../Board/Board.module.css";
 
 const getGridColumnCount = (cardCount) => {
@@ -11,15 +11,18 @@ const getGridColumnCount = (cardCount) => {
     return Number(cardCount / root);
 }
 
-function Board({ children }) {
-    const { cardCount } = useSettingsStore(state => state.settingsSnapshot);
-
-    console.log(cardCount);
+function Board({ children, cardCount }) {
+    cardCount = cardCount ?? Children.count(children);
 
     const gridColumnCount = getGridColumnCount(cardCount);
 
-    return <div className={styles.board} style={{ gridTemplateColumns: `repeat(${gridColumnCount}, 1fr)` }}>
-        { children }
+    return <div className={styles["board-container"]}>
+        <div
+            className={ styles.board }
+            style={{ gridTemplateColumns: `repeat(${ gridColumnCount }, 1fr)` }}
+        >
+            { children }
+        </div>
     </div>
 }
 

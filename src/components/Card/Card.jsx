@@ -1,6 +1,6 @@
 import styles from "../Card/Card.module.css";
 
-function Card({ card, isFlipped, onFlip}) {
+function Card({ card, isFlipped, onFlip }) {
     return <div
         className={styles.card + (isFlipped ? " " + styles.flipped : "")}
         onClick={ onFlip }
@@ -10,8 +10,8 @@ function Card({ card, isFlipped, onFlip}) {
         </div>
 
         <img
-            className={styles.card_image_flipped + " " + styles.card_image}
-            src={ "/src/assets/cards/" + card.cardImageName}
+            className={ styles.card_image_flipped + " " + styles.card_image }
+            src={ card ? "/src/assets/cards/" + card.cardImageName : undefined }
         />
     </div>
 }

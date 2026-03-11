@@ -9,3 +9,7 @@
     gap: 1rem;
     padding: 1rem;
 }
+
+.board-container {
+    display: flex;
+}
