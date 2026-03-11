@@ -40,6 +40,6 @@ const useSettingsStore = create(persist((set) => ({
             isGameGoing: state.isGameGoing,
         }),
     })),
-}), { name: "settigns-storage" }));
+}), { name: "settings-storage" }));
 
 export default useSettingsStore;

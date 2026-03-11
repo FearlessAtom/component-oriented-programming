@@ -4,7 +4,7 @@ title: CookiePopup
 sibebar_label: CookiePopup
 ---
 
-# Cookie Popup
+# CookiePopup
 
 The `CookiePopup` component handles user consent for data storage, ensuring compliance with privacy regulations (GDPR). It allows users to toggle specific cookie categories before accepting.
 
